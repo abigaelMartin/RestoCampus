@@ -1,5 +1,6 @@
 # Architecture 
-````RestoCampus/
+````
+RestoCampus
 ├── app/
 │   ├── controllers/       # Contrôleurs (logique métier)
 │   ├── models/            # Modèles (accès aux données)
