@@ -1,5 +1,5 @@
 # Architecture 
-``RestoCampus/
+````RestoCampus/
 ├── app/
 │   ├── controllers/       # Contrôleurs (logique métier)
 │   ├── models/            # Modèles (accès aux données)
@@ -13,4 +13,4 @@
 ├── routes/                # Fichier de routes (optionnel)
 ├── .htaccess              # Redirection vers public/index.php
 └── README.md`
-``
+````
