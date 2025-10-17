@@ -3,6 +3,7 @@ RewriteEngine On
 RewriteBase /
 
 # Si le fichier ou le dossier n'existe pas, rediriger vers index.php
+RewriteCond %{REQUEST_URI} !^/SLAM/RestoCampus/public/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ public/index.php [QSA,L]
