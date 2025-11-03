@@ -10,6 +10,7 @@ class AuthController {
             $password = trim($_POST['password']);
             $user = Utilisateur::getByLogin($login);
 
+            // Vérifie si l'utilisateur existe et si le mot de passe est correct
             if ($user && $user['password'] === $password) {
                 $_SESSION['user'] = [
                     'nom' => $user['nom'],
