@@ -17,7 +17,7 @@ $user = $_SESSION['user'];
     <h2>Bienvenue, <?= htmlspecialchars($user['prenom']) ?> <?= htmlspecialchars($user['nom']) ?> 👋</h2>
     <p>Statut : <strong><?= htmlspecialchars($user['statut']) ?></strong></p>
 
-    <form action="/SLAM/RestoCampus/app/controllers/AuthController.php" method="GET">
+    <form action="/RestoCampus/app/controllers/AuthController.php" method="GET">
         <input type="hidden" name="action" value="logout">
         <button type="submit" class="btn btn-danger mt-3">Déconnexion</button>
     </form>

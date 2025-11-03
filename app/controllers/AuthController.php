@@ -17,7 +17,7 @@ class AuthController {
                     'prenom' => $user['prenom'],
                     'statut' => $user['statut']
                 ];
-                header("Location: /SLAM/RestoCampus/public/");
+                header("Location: /RestoCampus/public/");
                 exit;
             } else {
                 $error = "Identifiants incorrects.";
@@ -33,7 +33,7 @@ class AuthController {
     public static function logout() {
         session_unset();
         session_destroy();
-        header("Location: /SLAM/RestoCampus/public/?action=login");
+        header("Location: /RestoCampus/public/?action=login");
         exit;
     }
 }

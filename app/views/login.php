@@ -109,8 +109,8 @@
         </div>
       <?php endif; ?>
 
-      <!-- ✅ Le formulaire corrigé -->
-      <form action="/SLAM/RestoCampus/public/?action=login" method="POST" novalidate>
+
+      <form action="/RestoCampus/public/?action=login" method="POST" novalidate>
         <div class="mb-3">
           <label for="login" class="form-label">Identifiant</label>
           <input type="text" name="login" id="login" class="form-control" autocomplete="username" required>
