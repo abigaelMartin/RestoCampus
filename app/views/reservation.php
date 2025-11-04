@@ -1,12 +1,198 @@
-<h2>Menus disponibles</h2>
-<ul>
-  <?php foreach ($menus as $menu): ?>
-    <li>
-      <?= htmlspecialchars($menu['libelleArt']) ?> - <?= htmlspecialchars($menu['libelleIng']) ?>
-      <form method="POST" action="?controleur=reservation&action=reserver">
-        <input type="hidden" name="id_menu" value="<?= $menu['id_article'] ?>">
-        <button type="submit">Réserver</button>
-      </form>
-    </li>
-  <?php endforeach; ?>
-</ul>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+  :root{
+    --brand:#7c3aed; /* violet élégant */
+    --brand-2:#22c55e; /* vert d'accent */
+    --ink:#0f172a;
+  }
+  body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans"; color:var(--ink)}
+
+  /* Cards */
+  .menu-card img{height: 190px; object-fit: cover;}
+  .menu-card{transition: transform .2s ease, box-shadow .2s ease}
+  .menu-card:hover{transform: translateY(-4px); box-shadow: 0 1.25rem 2rem rgba(16,24,40,.12)}
+
+  /* Section title & divider */
+  .section-title{font-weight:800; letter-spacing:.2px}
+  .divider{width:64px; height:6px; border-radius:999px; background:linear-gradient(90deg,var(--brand),var(--brand-2));}
+
+  /* Small utils */
+  .text-truncate-2{
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+  }
+</style>
+
+<section id="menu" class="py-5 bg-light">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="text-center mb-4">
+      <h2 class="section-title">Notre sélection du jour</h2>
+      <div class="divider mx-auto my-3"></div>
+      <p class="text-muted">Des plats signatures préparés par notre chef. Cliquez pour pré-remplir le formulaire de réservation.</p>
+    </div>
+
+    <!-- Tools: search -->
+    <div class="row justify-content-center mb-4">
+      <div class="col-md-8">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="search" id="searchMenus" class="form-control" placeholder="Rechercher un plat ou un ingrédient… (ex. truffe, poulet)" aria-label="Recherche de menus">
+        </div>
+      </div>
+    </div>
+
+    <?php if (empty($menus)): ?>
+      <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        <div>Aucun menu disponible pour le moment. Revenez plus tard ou contactez-nous pour plus d’informations.</div>
+      </div>
+    <?php else: ?>
+
+      <div class="row g-4" id="menusGrid">
+        <?php foreach ($menus as $menu): ?>
+          <?php
+            // Sécuriser/normaliser
+            $libelle = isset($menu['libelleArt']) ? trim($menu['libelleArt']) : 'Plat';
+            $libelleEsc = htmlspecialchars($libelle, ENT_QUOTES, 'UTF-8');
+
+            $ing = isset($menu['libelleIng']) ? trim($menu['libelleIng']) : '';
+            $ingEsc = htmlspecialchars($ing, ENT_QUOTES, 'UTF-8');
+
+            $prix = isset($menu['prix']) && is_numeric($menu['prix']) ? number_format((float)$menu['prix'], 2, ',', ' ') . ' €' : '—';
+
+            $img = !empty($menu['image_url'])
+              ? $menu['image_url']
+              // fallback Unsplash : on met le libellé en requête pour un visuel cohérent
+              : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop';
+
+            $dispo  = isset($menu['disponible']) ? (bool)$menu['disponible'] : null;
+            $stock  = isset($menu['stock']) ? (int)$menu['stock'] : null;
+            $idMenu = isset($menu['id']) ? (string)$menu['id'] : '';
+          ?>
+          <div class="col-sm-6 col-lg-4 menu-item"
+               data-title="<?= $libelleEsc ?>"
+               data-ingredients="<?= $ingEsc ?>">
+            <div class="card menu-card h-100">
+              <img src="<?= htmlspecialchars($img, ENT_QUOTES, 'UTF-8') ?>"
+                   class="card-img-top"
+                   alt="<?= $libelleEsc ?>"
+                   loading="lazy">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-start justify-content-between gap-2">
+                  <h5 class="card-title mb-1"><?= $libelleEsc ?></h5>
+                  <?php if ($dispo !== null): ?>
+                    <?php if ($dispo): ?>
+                      <span class="badge text-bg-success"><i class="bi bi-check2-circle me-1"></i>Dispo</span>
+                    <?php else: ?>
+                      <span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Indispo</span>
+                    <?php endif; ?>
+                  <?php endif; ?>
+                </div>
+
+                <p class="card-text text-muted text-truncate-2 mb-2"><?= $ingEsc ?></p>
+
+                <?php if ($stock !== null): ?>
+                  <small class="text-muted mb-1">
+                    <i class="bi bi-box-seam me-1"></i>
+                    Stock : <?= max(0, $stock) ?>
+                  </small>
+                <?php endif; ?>
+
+                <div class="d-flex align-items-center justify-content-between mt-auto pt-2">
+                  <span class="fw-semibold"><?= $prix ?></span>
+
+                  <!--
+                    Bouton de réservation :
+                    - data-* pour pré-remplir un formulaire ailleurs (via JS)
+                    - href de repli GET (au cas où JS désactivé) : adapte l’URL / route à ton app
+                  -->
+                  <a class="btn btn-outline-primary btn-sm reserve-btn"
+                     href="/reservation?plat=<?= urlencode($libelle) ?>&prix=<?= isset($menu['prix']) ? urlencode($menu['prix']) : '' ?>&id=<?= urlencode($idMenu) ?>"
+                     data-plat="<?= $libelleEsc ?>"
+                     data-prix="<?= isset($menu['prix']) ? htmlspecialchars($menu['prix'], ENT_QUOTES, 'UTF-8') : '' ?>"
+                     data-id="<?= htmlspecialchars($idMenu, ENT_QUOTES, 'UTF-8') ?>"
+                     <?php if ($dispo === false || ($stock !== null && $stock <= 0)): ?> aria-disabled="true" tabindex="-1" <?php endif; ?>
+                     >
+                    <i class="bi bi-bag-plus me-1"></i>Réserver
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+    <?php endif; ?>
+  </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  // Filtre de recherche simple (libellé + ingrédients)
+  (function(){
+    const input = document.getElementById('searchMenus');
+    const items = document.querySelectorAll('#menusGrid .menu-item');
+    if (!input || !items.length) return;
+
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      items.forEach(card => {
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const ing   = (card.getAttribute('data-ingredients') || '').toLowerCase();
+        const visible = !q || title.includes(q) || ing.includes(q);
+        card.style.display = visible ? '' : 'none';
+      });
+    });
+  })();
+
+  // Pré-remplissage d'un formulaire externe si présent (ex. #reservation)
+  (function(){
+    const buttons = document.querySelectorAll('.reserve-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', (ev) => {
+        // Si tu as une section/formulaire de réservation sur la page :
+        const formPlat = document.getElementById('plat');
+        const formPrix = document.getElementById('prix');
+        const formId   = document.getElementById('menu_id');
+
+        const plat = btn.getAttribute('data-plat');
+        const prix = btn.getAttribute('data-prix');
+        const id   = btn.getAttribute('data-id');
+
+        if (formPlat) {
+          ev.preventDefault(); // on reste sur la page pour pré-remplir
+          // Sélectionne l’option correspondante si elle existe
+          let matched = false;
+          if (formPlat.tagName === 'SELECT') {
+            [...formPlat.options].forEach(opt => {
+              if (opt.text.trim() === plat) { formPlat.value = opt.value || opt.text; matched = true; }
+            });
+            if (!matched) {
+              // fallback : insère l’option si non présente
+              const opt = document.createElement('option');
+              opt.value = plat;
+              opt.text = plat;
+              opt.selected = true;
+              formPlat.appendChild(opt);
+            }
+          } else {
+            formPlat.value = plat;
+          }
+          if (formPrix) formPrix.value = prix || '';
+          if (formId)   formId.value = id || '';
+
+          // Fais défiler jusqu’au formulaire
+          const target = document.getElementById('reservation') || formPlat.closest('form');
+          if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  })();
+</script>

@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/../models/Utilisateur.php');
-session_start();
+
 
 $action = $_GET['action'] ?? 'login';
 
