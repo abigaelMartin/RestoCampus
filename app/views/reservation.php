@@ -2,30 +2,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-
-<style>
-  :root{
-    --brand:#7c3aed; /* violet élégant */
-    --brand-2:#22c55e; /* vert d'accent */
-    --ink:#0f172a;
-  }
-  body{font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans"; color:var(--ink)}
-
-  /* Cards */
-  .menu-card img{height: 190px; object-fit: cover;}
-  .menu-card{transition: transform .2s ease, box-shadow .2s ease}
-  .menu-card:hover{transform: translateY(-4px); box-shadow: 0 1.25rem 2rem rgba(16,24,40,.12)}
-
-  /* Section title & divider */
-  .section-title{font-weight:800; letter-spacing:.2px}
-  .divider{width:64px; height:6px; border-radius:999px; background:linear-gradient(90deg,var(--brand),var(--brand-2));}
-
-  /* Small utils */
-  .text-truncate-2{
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-  }
-</style>
-
+<link rel="stylesheet" href="../../public/css/reservation.css">
+<?php include "../views/layout/header.php";?>
 <section id="menu" class="py-5 bg-light">
   <div class="container">
 
@@ -33,7 +11,7 @@
     <div class="text-center mb-4">
       <h2 class="section-title">Notre sélection du jour</h2>
       <div class="divider mx-auto my-3"></div>
-      <p class="text-muted">Des plats signatures préparés par notre chef. Cliquez pour pré-remplir le formulaire de réservation.</p>
+      <p class="text-muted">Des plats signatures préparés par nos chefs. </p>
     </div>
 
     <!-- Tools: search -->
@@ -59,7 +37,6 @@
             // Sécuriser/normaliser
             $libelle = isset($menu['libelleArt']) ? trim($menu['libelleArt']) : 'Plat';
             $libelleEsc = htmlspecialchars($libelle, ENT_QUOTES, 'UTF-8');
-
             $ing = isset($menu['libelleIng']) ? trim($menu['libelleIng']) : '';
             $ingEsc = htmlspecialchars($ing, ENT_QUOTES, 'UTF-8');
 
@@ -71,27 +48,33 @@
               : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop';
 
             $dispo  = isset($menu['disponible']) ? (bool)$menu['disponible'] : null;
-            $stock  = isset($menu['stock']) ? (int)$menu['stock'] : null;
+            $stock  = isset($menu['qte_max']) ? (int)$menu['qte_max'] : null;
             $idMenu = isset($menu['id']) ? (string)$menu['id'] : '';
           ?>
+
+
           <div class="col-sm-6 col-lg-4 menu-item"
                data-title="<?= $libelleEsc ?>"
                data-ingredients="<?= $ingEsc ?>">
+
             <div class="card menu-card h-100">
               <img src="<?= htmlspecialchars($img, ENT_QUOTES, 'UTF-8') ?>"
-                   class="card-img-top"
-                   alt="<?= $libelleEsc ?>"
-                   loading="lazy">
+                class="card-img-top"
+                alt="<?= $libelleEsc ?>"
+                loading="lazy"
+              />
+
               <div class="card-body d-flex flex-column">
                 <div class="d-flex align-items-start justify-content-between gap-2">
+
                   <h5 class="card-title mb-1"><?= $libelleEsc ?></h5>
-                  <?php if ($dispo !== null): ?>
-                    <?php if ($dispo): ?>
-                      <span class="badge text-bg-success"><i class="bi bi-check2-circle me-1"></i>Dispo</span>
-                    <?php else: ?>
-                      <span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Indispo</span>
-                    <?php endif; ?>
+                  
+                  <?php if ($stock > 0): ?>
+                    <span class="badge text-bg-success"><i class="bi bi-check2-circle me-1"></i>Dispo</span>
+                  <?php else: ?>
+                    <span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Indispo</span>
                   <?php endif; ?>
+                  
                 </div>
 
                 <p class="card-text text-muted text-truncate-2 mb-2"><?= $ingEsc ?></p>
@@ -105,7 +88,7 @@
 
                 <div class="d-flex align-items-center justify-content-between mt-auto pt-2">
                   <span class="fw-semibold"><?= $prix ?></span>
-
+                
                   <!--
                     Bouton de réservation :
                     - data-* pour pré-remplir un formulaire ailleurs (via JS)
@@ -130,6 +113,7 @@
     <?php endif; ?>
   </div>
 </section>
+<?php include "../views/layout/footer.php";?>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
