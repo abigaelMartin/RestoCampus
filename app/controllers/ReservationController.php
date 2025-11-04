@@ -1,41 +1,42 @@
 <?php
-require_once(__DIR__ . '/../models/Reservation.php');
 session_start();
 
-class ReservationController {
+// Sécurité : redirection si l'utilisateur n'est pas connecté
+if (!isset($_SESSION['login'])) {
+    header("Location: /RestoCampus/public/?controleur=auth&action=login");
+    exit;
+}
 
-    public static function reserver() {
-        // Vérifie que l'utilisateur est connecté
-        if (!isset($_SESSION['user'])) {
-            header("Location: /RestoCampus/public/?action=login");
-            exit;
-        }
+// Connexion au modèle
+require_once(__DIR__ . '/../models/Reservation.php');
 
-        // Vérifie le statut "étudiant"
-        if ($_SESSION['user']['statut'] !== 'etudiant') {
-            $error = "Accès réservé aux étudiants.";
-            require(__DIR__ . '/../views/error.php');
-            exit;
-        }
+// Récupération de l'action
+$action = $_GET['action'] ?? 'liste';
 
+// Contrôleur basé sur switch
+switch ($action) {
+    case 'liste':
+        // Récupère tous les menus disponibles
+        $menus = Reservation::getMenusDisponibles(); // méthode à créer dans Menu.php
+        require(__DIR__ . '/../views/reservation.php'); // vue à créer pour afficher les menus
+        break;
+
+    case 'reserver':
+        // Traitement de la réservation
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $date = $_POST['date'] ?? null;
-            $heure = $_POST['heure'] ?? null;
-            $personnes = $_POST['personnes'] ?? 1;
-            $login = $_SESSION['user']['prenom'] . " " . $_SESSION['user']['nom'];
+            $id_menu = intval($_POST['id_menu']);
+            $id_user = $_SESSION['id'];
 
-            if ($date && $heure) {
-                $ok = Reservation::creer($login, $date, $heure, $personnes);
-                if ($ok) {
-                    $success = "Réservation effectuée avec succès pour le $date à $heure.";
-                } else {
-                    $error = "Erreur lors de la réservation. Réessayez.";
-                }
-            } else {
-                $error = "Veuillez remplir tous les champs.";
-            }
+            // Appel au modèle pour enregistrer la réservation
+            require_once(__DIR__ . '/../models/Reservation.php');
+            Reservation::reserverMenu($id_user, $id_menu);
+
+            header("Location: /RestoCampus/public/?controleur=reservation&action=liste");
+            exit;
         }
+        break;
 
-        require(__DIR__ . '/../views/reservation.php');
-    }
+    default:
+        echo "Action non reconnue.";
+        break;
 }

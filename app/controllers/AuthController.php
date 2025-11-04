@@ -2,42 +2,43 @@
 require_once(__DIR__ . '/../models/Utilisateur.php');
 session_start();
 
-class AuthController {
+$action = $_GET['action'] ?? 'login';
 
-    public static function login() {
+switch ($action) {
+    case 'login':
+        $message = '';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $login = trim($_POST['login']);
-            $password = trim($_POST['password']);
+            $login = filter_input(INPUT_POST, 'login', FILTER_SANITIZE_SPECIAL_CHARS);
+            $password = $_POST['password'];
+
             $user = Utilisateur::getByLogin($login);
 
-            // Vérifie si l'utilisateur existe et si le mot de passe est correct
             if ($user && $user['password'] === $password) {
-                $_SESSION['user'] = [
-                    'nom' => $user['nom'],
-                    'prenom' => $user['prenom'],
-                    'statut' => $user['statut']
-                ];
-                header("Location: /RestoCampus/public/");
+                session_start();
+                $_SESSION['id'] = $user['id_user'];
+                $_SESSION['login'] = $user['login'];
+                $_SESSION['statut'] = $user['statut'];
+
+                header("Location: /RestoCampus/app/views/home.php");
                 exit;
             } else {
-                $error = "Identifiants incorrects.";
-                require(__DIR__ . '/../views/login.php');
-                exit;
+                $message = "Identifiants incorrects.";
             }
-        } else {
-            require(__DIR__ . '/../views/login.php');
-            exit;
         }
-    }
+        require(__DIR__ . '/../views/login.php');
+        break;
 
-    public static function logout() {
+    case 'logout':
+        session_start();
         session_unset();
         session_destroy();
         header("Location: /RestoCampus/public/?action=login");
         exit;
-    }
+        break;
+
+    default:
+        echo "Action inconnue.";
+        break;
 }
 
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    AuthController::logout();
-}
+?>

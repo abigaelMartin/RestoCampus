@@ -20,4 +20,16 @@ class Reservation {
             return false;
         }
     }
+
+    public static function getMenusDisponibles() {
+       global $conn;
+        $stmt = $conn->query("SELECT * FROM PropositionArticleJour JOIN Article ON PropositionArticleJour.id_article = Article.id_article JOIN composer ON Article.id_article = composer.id_article JOIN Ingredient ON composer.id_ingredient = Ingredient.id_ingredient");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function reserverMenu($id_user, $id_menu) {
+        $pdo = new PDO("mysql:host=localhost;dbname=restocampus", "root", "");
+        $stmt = $pdo->prepare("INSERT INTO reservations (id_user, id_menu, date_reservation) VALUES (?, ?, NOW())");
+        $stmt->execute([$id_user, $id_menu]);
+    }
 }
