@@ -116,7 +116,15 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
+        <?php
+        // Dans la base de données le champ s'appelle `statut` — on le normalise en minuscules
+        $statut = strtolower($user['statut'] ?? '');
+        // Rôles considérés comme gestionnaire/admin — ajoutez d'autres variantes si nécessaire
+        if (in_array($statut, ['gestionnaire', 'admin', 'administrateur'])): ?>
+          <li class="nav-item"><a class="nav-link" href="?controleur=menu&action=ajouter"><i class="bi bi-plus-circle me-1"></i>Ajouter un menu</a></li>
+        <?php else: ?>
+          <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
+        <?php endif; ?>
         <li class="nav-item"><a class="nav-link" href="contact.php"><i class="bi bi-envelope me-1"></i>Contact</a></li>
       </ul>
 
@@ -189,3 +197,5 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     });
   }
 </script>
+
+
