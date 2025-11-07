@@ -29,6 +29,7 @@ function badgeStatut($s){
   .empty{
     border:1px dashed rgba(2,6,23,.15); border-radius:1rem; padding:2rem; background:#fff
   }
+  
 </style>
 
 <header class="page-head py-4 border-bottom">
@@ -79,11 +80,9 @@ function badgeStatut($s){
       <?php
         $total = count($reservations ?? []);
         $actives = array_sum(array_map(fn($r)=> in_array($r['statut']??'', ['en_attente','confirmee']) ? 1:0, $reservations ?? []));
-        $montant = array_sum(array_map(fn($r)=> (float)($r['prix']??0) * (int)($r['quantite']??1), $reservations ?? []));
       ?>
       <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Total</div><div class="h4 mb-0"><?= $total ?></div></div></div>
       <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Actives</div><div class="h4 mb-0"><?= $actives ?></div></div></div>
-      <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Montant cumulé</div><div class="h4 mb-0"><?= euro($montant) ?></div></div></div>
       <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Dernière</div><div class="h4 mb-0"><?= e(($reservations[0]['date'] ?? '') ?: '—') ?></div></div></div>
     </div>
 
@@ -101,10 +100,10 @@ function badgeStatut($s){
           <thead class="table-light">
             <tr>
               <th>Réf.</th>
+              <th>Date</th>
               <th>Plat</th>
               <th class="text-center">Qté</th>
               <th>Retrait</th>
-              <th>Prix</th>
               <th>Statut</th>
               <th class="text-end">Action</th>
             </tr>
@@ -113,10 +112,8 @@ function badgeStatut($s){
             <?php foreach ($reservations as $r):
               $ref   = '#R-' . e($r['id_commande'] ?? '?');
               $plat  = e($r['libelleArt'] ?? '—');
-              $qte   = (int)($r['quantite'] ?? 1);
-              $prixU = (float)($r['prix'] ?? 0);
-              $prixT = $prixU * $qte;
-              $date  = e($r['date'] ?? '');
+              $qte   = (int)($r['quantite'] ?? 1);  
+              $date  = e($r['date_de_commande'] ?? '');
               $heure = e($r['heure_retrait'] ?? '');
               $stat  = $r['statut'] ?? '';
               $cancelAllowed = in_array($stat, ['en_attente','confirmee']);
@@ -124,16 +121,17 @@ function badgeStatut($s){
               <tr>
                 <td><?= $ref ?></td>
                 <td>
-                  <div class="fw-semibold"><?= $plat ?></div>
-                  <!-- <small class="text-muted">Le <?= $date ?> à <?= $heure ?></small> -->
+                  <?= $date ?>
                 </td>
+                <td>
+                  <div class="fw-semibold"><?= $plat ?></div>
+                </td>
+                
                 <td class="text-center"><?= $qte ?></td>
                 <td><i class="bi bi-clock me-1"></i><?= $heure ?></td>
-                <td>
-                  <div><?= euro($prixU) ?> <small class="text-muted">/u</small></div>
-                  <small class="text-muted">Total : <?= euro($prixT) ?></small>
-                </td>
+              
                 <td><?= badgeStatut($stat) ?></td>
+                
                 <td class="text-end ">
                   <div class="btn-group" role="group">
                     <a class="btn btn-sm btn-outline-secondary" href="reservation_details.php?id=<?= e($r['id_commande']) ?>">
