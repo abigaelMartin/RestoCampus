@@ -2,8 +2,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
-<link rel="stylesheet" href="../../public/css/reservation.css">
-<?php include "../views/layout/header.php";?>
+<link rel="stylesheet" href="css/reservation.css" />
+<?php include "../app/views/layout/header.php"; ?>
 <section id="menu" class="py-5 bg-light">
   <div class="container">
 
@@ -113,7 +113,8 @@
     <?php endif; ?>
   </div>
 </section>
-<?php include "../views/layout/footer.php";?>
+<?php include "../app/views/layout/footer.php"; ?>
+
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

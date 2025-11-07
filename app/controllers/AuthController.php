@@ -15,11 +15,15 @@ switch ($action) {
 
             if ($user && $user['password'] === $password) {
                 session_start();
-                $_SESSION['id'] = $user['id_user'];
-                $_SESSION['login'] = $user['login'];
-                $_SESSION['statut'] = $user['statut'];
-
-                header("Location: /RestoCampus/app/views/home.php");
+                $_SESSION['user'] = [
+                    'id' => $user['id_user'],
+                    'prenom' => $user['prenom'],
+                    'nom' => $user['nom'],
+                    'email' => $user['email'],
+                    'login' => $user['login'],
+                    'statut' => $user['statut']
+                ];
+                header("Location: ../public/?controleur=reservation&action=liste");
                 exit;
             } else {
                 $message = "Identifiants incorrects.";
