@@ -137,14 +137,14 @@ function badgeStatut($s){
                     <a class="btn btn-sm btn-outline-secondary" href="reservation_details.php?id=<?= e($r['id_commande']) ?>">
                       <i class="bi bi-eye me-1"></i>Voir
                     </a>
-                    <form method="post" action="/public/?controleur=reservation&action=cancel" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">
-                      <?php if (!empty($csrf_token)): ?>
-                        <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
-                      <?php endif; ?>
-                      <input type="hidden" name="id" value="<?= e($r['id_commande']) ?>">
-                      <button class="btn btn-sm btn-outline-danger" <?= $cancelAllowed? '' : 'disabled' ?> type="submit">
+                    <form method="post" action="?controleur=reservation&action=annuler" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">
+                      <input type="hidden" name="id_cmd" value="<?= e($r['id_commande']) ?>">
+                      <input type="hidden" name="id_Art" value="<?= e($r['id_ArtJour']) ?>">
+
+                      <button class="btn btn-sm btn-outline-danger" type="submit" > <?/*= $cancelAllowed? '' : 'disabled' */?> 
                         <i class="bi bi-x-circle me-1"></i>Annuler
                       </button>
+                      
                     </form>
                   </div>
                 </td>
