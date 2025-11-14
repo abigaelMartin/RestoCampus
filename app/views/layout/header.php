@@ -116,8 +116,14 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<<<<<<< HEAD
         <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
         <li class="nav-item"><a class="nav-link" href="contact.php"><i class="bi bi-envelope me-1"></i>Contact</a></li>
+=======
+
+      
+        <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
+>>>>>>> abi
       </ul>
 
       <!-- Dropdown Mon compte (stylé) -->
@@ -144,6 +150,14 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
           <!-- Corps : actions -->
           <div class="account-body">
+
+          <?php if (isset($user['statut']) && in_array($user['statut'], ['gestionnaire', 'Admin'])): ?>
+            <a class="account-item" href="?controleur=Article&action=AjouterMenu">
+              <i class="bi bi-plus-circle fs-5"></i> <span>Ajouter un menu</span>
+            </a>
+          <?php endif; ?>
+
+
             <a class="account-item" href="?controleur=auth&action=profil">
               <i class="bi bi-person fs-5"></i> <span>Profil</span>
             </a>

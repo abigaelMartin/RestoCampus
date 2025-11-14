@@ -42,7 +42,7 @@ switch ($action) {
 
             }
 
-            
+           
            
         }
         break;
@@ -61,6 +61,9 @@ switch ($action) {
         $act = Reservation::annuler($id, $id_Art);
         header("Location: /RestoCampus/public/?controleur=reservation&action=mesreservations");
         break;
+
+
+    
 
     default:
         echo "Action non reconnue.";
