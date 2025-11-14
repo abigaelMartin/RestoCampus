@@ -116,14 +116,9 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-<<<<<<< HEAD
-        <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.php"><i class="bi bi-envelope me-1"></i>Contact</a></li>
-=======
 
       
         <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
->>>>>>> abi
       </ul>
 
       <!-- Dropdown Mon compte (stylé) -->
@@ -203,5 +198,3 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     });
   }
 </script>
-
-
