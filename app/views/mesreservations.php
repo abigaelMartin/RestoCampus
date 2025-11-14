@@ -7,7 +7,7 @@
 // - $csrf_token (string, optionnel) pour actions POST (annulation)
 
 $title = $title ?? 'Mes réservations';
-include 'layout/header.php'; // protège l'accès + navbar
+
 
 function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 function euro($n){ return number_format((float)$n, 2, ',', ' ') . ' €'; }
@@ -177,4 +177,3 @@ function badgeStatut($s){
   </div>
 </section>
 
-<?php include 'layout/footer.php'; ?>
