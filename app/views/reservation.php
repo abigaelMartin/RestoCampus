@@ -35,21 +35,19 @@
         <?php foreach ($menus as $menu): ?>
           <?php
             // Sécuriser/normaliser
+            
             $libelle = isset($menu['libelleArt']) ? trim($menu['libelleArt']) : 'Plat';
             $libelleEsc = htmlspecialchars($libelle, ENT_QUOTES, 'UTF-8');
-            $ing = isset($menu['libelleIng']) ? trim($menu['libelleIng']) : '';
+            $ing = isset($menu['Description']) ? trim($menu['Description']) : '';
             $ingEsc = htmlspecialchars($ing, ENT_QUOTES, 'UTF-8');
-
-            $prix = isset($menu['prix']) && is_numeric($menu['prix']) ? number_format((float)$menu['prix'], 2, ',', ' ') . ' €' : '—';
 
             $img = !empty($menu['image_url'])
               ? $menu['image_url']
               // fallback Unsplash : on met le libellé en requête pour un visuel cohérent
               : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop';
 
-            $dispo  = isset($menu['disponible']) ? (bool)$menu['disponible'] : null;
             $stock  = isset($menu['qte_max']) ? (int)$menu['qte_max'] : null;
-            $idMenu = isset($menu['id']) ? (string)$menu['id'] : '';
+            $idMenu = isset($menu['id_ArtJour']) ? (string)$menu['id_ArtJour'] : '';
           ?>
 
 
@@ -79,30 +77,23 @@
 
                 <p class="card-text text-muted text-truncate-2 mb-2"><?= $ingEsc ?></p>
 
-                <?php if ($stock !== null): ?>
-                  <small class="text-muted mb-1">
-                    <i class="bi bi-box-seam me-1"></i>
-                    Stock : <?= max(0, $stock) ?>
-                  </small>
-                <?php endif; ?>
-
+               
                 <div class="d-flex align-items-center justify-content-between mt-auto pt-2">
-                  <span class="fw-semibold"><?= $prix ?></span>
-                
-                  <!--
-                    Bouton de réservation :
-                    - data-* pour pré-remplir un formulaire ailleurs (via JS)
-                    - href de repli GET (au cas où JS désactivé) : adapte l’URL / route à ton app
-                  -->
-                  <a class="btn btn-outline-primary btn-sm reserve-btn"
-                     href="/reservation?plat=<?= urlencode($libelle) ?>&prix=<?= isset($menu['prix']) ? urlencode($menu['prix']) : '' ?>&id=<?= urlencode($idMenu) ?>"
-                     data-plat="<?= $libelleEsc ?>"
-                     data-prix="<?= isset($menu['prix']) ? htmlspecialchars($menu['prix'], ENT_QUOTES, 'UTF-8') : '' ?>"
-                     data-id="<?= htmlspecialchars($idMenu, ENT_QUOTES, 'UTF-8') ?>"
-                     <?php if ($dispo === false || ($stock !== null && $stock <= 0)): ?> aria-disabled="true" tabindex="-1" <?php endif; ?>
-                     >
-                    <i class="bi bi-bag-plus me-1"></i>Réserver
-                  </a>
+                  <?php if ($stock !== null): ?>
+                    <small class="text-muted mb-1">
+                      <i class="bi bi-box-seam me-1"></i>
+                      Stock : <?= max(0, $stock) ?>
+                    </small>
+                  <?php endif; ?>
+                    <form action="?controleur=reservation&action=reserver" method="POST">
+                      <input type="hidden" name="id_plat" value="<?= htmlspecialchars($idMenu, ENT_QUOTES, 'UTF-8') ?>">
+                      <?php if($stock >0 ){?>
+
+                        <button class="btn btn-outline-primary btn-sm reserve-btn"><i class="bi bi-bag-plus me-1"></i>Réserver</button>
+
+                      <?php }?>
+                    </form>
+                  
                 </div>
               </div>
             </div>

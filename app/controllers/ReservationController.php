@@ -24,23 +24,42 @@ switch ($action) {
 
     case 'reserver':
         // Traitement de la réservation
-        // if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //     $id_menu = intval($_POST['id_menu']);
-        //     $id_user = $_SESSION['id'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_menu = filter_input(INPUT_POST, 'id_plat', FILTER_VALIDATE_INT);
+            $stock = filter_input(INPUT_POST, 'stock', FILTER_VALIDATE_INT);
+            $id_user = $_SESSION['user']['id'];
 
-        //     // Appel au modèle pour enregistrer la réservation
-        //     require_once(__DIR__ . '/../models/Reservation.php');
-        //     Reservation::reserverMenu($id_user, $id_menu);
+            // Appel au modèle pour enregistrer la réservation
+            require_once(__DIR__ . '/../models/Reservation.php');
+            $reservation = Reservation::reservermenu($id_user, $id_menu);
+            if ($reservation) {
+                echo "Réservation enregistrée ✅";
+                header("Location: /RestoCampus/public/?controleur=reservation&action=mesreservations");
+                 exit;
+            } else {
+                echo "Erreur lors de la réservation ❌";
+                 exit;
 
-        //     header("Location: /RestoCampus/public/?controleur=reservation&action=liste");
-        //     exit;
-        // }
-        // break;
+            }
+
+            
+           
+        }
+        break;
     case 'mesreservations':
         // Récupère les réservations de l'utilisateur connecté
         $id_user = $_SESSION['user']['id'];
         $reservations = Reservation::mesReservations($id_user); // méthode à créer dans Reservation.php
         require(__DIR__ . '/../views/mesreservations.php'); // vue à créer pour afficher les réservations
+        break;
+
+    case 'annuler':
+        $id = filter_input(INPUT_POST, 'id_cmd', FILTER_VALIDATE_INT);
+        $id_Art = filter_input(INPUT_POST, 'id_Art', FILTER_VALIDATE_INT);
+
+
+        $act = Reservation::annuler($id, $id_Art);
+        header("Location: /RestoCampus/public/?controleur=reservation&action=mesreservations");
         break;
 
     default:

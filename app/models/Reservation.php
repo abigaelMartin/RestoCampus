@@ -6,9 +6,7 @@ class Reservation {
     public static function getMenusDisponibles() {
         global $conn;
         $stmt = $conn->query("SELECT * FROM PropositionArticleJour 
-                              JOIN Article ON PropositionArticleJour.id_article = Article.id_article 
-                              JOIN composer ON Article.id_article = composer.id_article 
-                              JOIN Ingredient ON composer.id_ingredient = Ingredient.id_ingredient");
+                              JOIN Article ON PropositionArticleJour.id_article = Article.id_article ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -17,8 +15,9 @@ class Reservation {
         global $conn;
         $stmt = $conn->prepare("SELECT *
                                 FROM Commande 
-                                JOIN commander  ON Commande.id_commande = commander.id_commande 
-                                JOIN PropositionArticleJour ON PropositionArticleJour.id_ArtJour = commander.id_ArtJour JOIN Article ON Article.id_article = PropositionArticleJour.id_article
+                                JOIN Commander  ON Commande.id_commande = Commander.id_commande 
+                                JOIN PropositionArticleJour ON PropositionArticleJour.id_ArtJour = Commander.id_ArtJour 
+                                JOIN Article ON Article.id_article = PropositionArticleJour.id_article
                                 WHERE Commande.id_user = :id 
                                 ORDER BY date_de_commande DESC");
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -27,13 +26,42 @@ class Reservation {
     }
 
     //  Fonction pour effectuer une réservation
-    public static function reserver($id_utilisateur, $id_proposition, $date_reservation) {
+    public static function reservermenu($id_utilisateur, $id_proposition) {
         global $conn;
-        $stmt = $conn->prepare("INSERT INTO Reservation (id_utilisateur, id_proposition, date_reservation) 
-                                VALUES (:id_utilisateur, :id_proposition, :date_reservation)");
+        $stmt = $conn->prepare("INSERT INTO Commande (id_user) 
+                                VALUES (:id_utilisateur)");
         $stmt->bindParam(':id_utilisateur', $id_utilisateur, PDO::PARAM_INT);
-        $stmt->bindParam(':id_proposition', $id_proposition, PDO::PARAM_INT);
-        $stmt->bindParam(':date_reservation', $date_reservation);
-        return $stmt->execute();
+        $stmt->execute();
+        echo $id_proposition;
+        $id_commande = $conn->lastInsertId();
+
+        $stmt1 = $conn->prepare("INSERT INTO Commander (id_commande, id_ArtJour) VALUES (:id_commande, :id_ArtJour)");
+        $stmt1->bindParam(':id_commande', $id_commande, PDO::PARAM_INT);
+        $stmt1->bindParam(':id_ArtJour', $id_proposition,PDO::PARAM_INT);
+        $stmt1->execute();
+
+        $stmt2 = $conn->prepare("UPDATE PropositionArticleJour
+        SET qte_max = qte_max - 1
+        WHERE id_ArtJour = ?");
+        $stmt2->execute([$id_proposition]);
+
+
+        if ($stmt1){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public static function annuler($id, $id_Art){
+        global $conn;
+        $stmt = $conn->prepare("UPDATE Commande SET statut='Annulée' WHERE id_commande = ?");
+        $stmt->execute([$id]);
+
+        $stmt1 = $conn->prepare("UPDATE PropositionArticleJour SET qte_max = qte_max + 1
+        WHERE id_ArtJour = ? ");
+        $stmt1->execute([$id_Art]);
+        
     }
 }
