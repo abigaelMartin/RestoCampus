@@ -31,7 +31,11 @@ switch ($action) {
         }
         require(__DIR__ . '/../views/login.php');
         break;
-
+        
+    case 'profil':
+        require(__DIR__ . '/../views/profil.php');
+        break;
+      
     case 'logout':
         session_start();
         session_unset();
@@ -39,7 +43,7 @@ switch ($action) {
         header("Location: /RestoCampus/public/?action=login");
         exit;
         break;
-
+    
     default:
         echo "Action inconnue.";
         break;

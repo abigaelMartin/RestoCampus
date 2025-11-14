@@ -45,7 +45,7 @@ function badgeStatut($s){
 <section class="py-4">
   <div class="container">
     <!-- Filtres / recherche -->
-    <form class="row gy-2 gx-3 align-items-end mb-3" method="get" action="mes_reservations.php">
+    <form class="row gy-2 gx-3 align-items-end mb-3" method="get" action="mesreservations.php">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Recherche</label>
         <input type="search" class="form-control" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Plat, référence…">
@@ -59,8 +59,7 @@ function badgeStatut($s){
         <select class="form-select" name="statut">
           <?php $s = $_GET['statut'] ?? ''; ?>
           <option value="">Tous</option>
-          <option value="en_attente"   <?= $s==='en_attente'?'selected':'' ?>>En attente</option>
-          <option value="confirmee"    <?= $s==='confirmee'?'selected':'' ?>>Confirmée</option>
+          <option value="Confirmée"   <?= $s==='Confirmée'?'selected':'' ?>>Confirmée</option>
           <option value="retiree"      <?= $s==='retiree'?'selected':'' ?>>Retirée</option>
           <option value="annulee"      <?= $s==='annulee'?'selected':'' ?>>Annulée</option>
         </select>
@@ -140,11 +139,14 @@ function badgeStatut($s){
                     <form method="post" action="?controleur=reservation&action=annuler" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">
                       <input type="hidden" name="id_cmd" value="<?= e($r['id_commande']) ?>">
                       <input type="hidden" name="id_Art" value="<?= e($r['id_ArtJour']) ?>">
-
-                      <button class="btn btn-sm btn-outline-danger" type="submit" > <?/*= $cancelAllowed? '' : 'disabled' */?> 
-                        <i class="bi bi-x-circle me-1"></i>Annuler
-                      </button>
                       
+                      <?php if($r['statut'] !='Annulée'){?>
+                        <button class="btn btn-sm btn-outline-danger" type="submit" > <?/*= $cancelAllowed? '' : 'disabled' */?> 
+                          <i class="bi bi-x-circle me-1"></i>Annuler
+                        </button>
+
+                      <?php }?>
+
                     </form>
                   </div>
                 </td>

@@ -31,7 +31,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active { color:#f8fafc; text-decoration:underline; }
 
     .avatar-circle {
-      width:34px; height:34px; border-radius:50%; background:#ffffff22; color:#fff;
+      width:34px; height:34px; border-radius:50%; background:#0ea5e9; color:#fff;
       display:inline-flex; align-items:center; justify-content:center; font-weight:700; text-transform:uppercase;
     }
     .dropdown-toggle::after { display:none; }
@@ -117,7 +117,6 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     <div class="collapse navbar-collapse" id="navMenu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
-        <li class="nav-item"><a class="nav-link" href="contact.php"><i class="bi bi-envelope me-1"></i>Contact</a></li>
       </ul>
 
       <!-- Dropdown Mon compte (stylé) -->
@@ -144,7 +143,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
           <!-- Corps : actions -->
           <div class="account-body">
-            <a class="account-item" href="#">
+            <a class="account-item" href="?controleur=auth&action=profil">
               <i class="bi bi-person fs-5"></i> <span>Profil</span>
             </a>
             <a class="account-item" href="?controleur=reservation&action=mesreservations">
