@@ -188,3 +188,5 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     });
   }
 </script>
+
+
