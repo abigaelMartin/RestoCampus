@@ -1,10 +1,5 @@
 <?php
-// Vue : mes_reservations.php
-// Attendu côté contrôleur :
-// - $title (string)
-// - $reservations (array d'assoc) ex. [ [ 'id'=>123, 'plat'=>'Salade César', 'quantite'=>1, 'prix'=>5.5, 'heure_retrait'=>'12:15', 'date'=>'2025-11-05', 'statut'=>'en_attente' ], ... ]
-// - $page (int, optionnel), $total_pages (int, optionnel)
-// - $csrf_token (string, optionnel) pour actions POST (annulation)
+
 
 $title = $title ?? 'Mes réservations';
 
@@ -31,6 +26,8 @@ function badgeStatut($s){
   }
   
 </style>
+
+<?php include "../app/views/layout/header.php" ?>
 
 <header class="page-head py-4 border-bottom">
   <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
@@ -176,4 +173,7 @@ function badgeStatut($s){
     <?php endif; ?>
   </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<?php include "../app/views/layout/footer.php" ?>
+
 

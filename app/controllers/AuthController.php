@@ -41,7 +41,6 @@ switch ($action) {
         session_unset();
         session_destroy();
         header("Location: /RestoCampus/public/?action=login");
-        exit;
         break;
     
     default:

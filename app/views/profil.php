@@ -2,10 +2,6 @@
 // --- Titre de la page (utilisé dans header.php) ---
 $title = 'Mon profil';
 
-// On suppose que le header gère déjà la sécurité + session
-// Adapter le chemin si besoin :
-include 'layout/header.php'; // protège l'accès + navbar
-
 // Récupération de l'utilisateur connecté
 $user = $_SESSION['user'] ?? [];
 
@@ -13,7 +9,9 @@ $user = $_SESSION['user'] ?? [];
 function h(string $value = null) {
   return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
+include "../app/views/layout/header.php";
 ?>
+
 
 <main class="py-4 py-lg-5">
   <div class="container">
@@ -229,7 +227,7 @@ function h(string $value = null) {
 
   </div>
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <?php
 // Adapter le chemin si besoin :
 require __DIR__ . '/layout/footer.php';
