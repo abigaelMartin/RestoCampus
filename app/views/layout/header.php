@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 if (!isset($_SESSION['user'])) {
-  header('Location: /public/?controleur=auth&action=login');
+  header('Location: /RestoCampus/public/?controleur=auth&action=login');
   exit();
 }
 
@@ -198,5 +198,3 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
     });
   }
 </script>
-
-
