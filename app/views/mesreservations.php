@@ -28,7 +28,7 @@ function badgeStatut($s){
 </style>
 
 
-
+<?php include '../app/views/layout/header.php'?>
 <header class="page-head py-4 border-bottom">
   <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
     <div>

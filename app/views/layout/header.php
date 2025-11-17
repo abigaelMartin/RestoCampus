@@ -17,7 +17,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= isset($title) ? htmlspecialchars($title) . ' | Resto+' : 'Resto+ — Réservation de plats'; ?></title>
+  <title>RestoCampus</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -146,14 +146,9 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
           <!-- Corps : actions -->
           <div class="account-body">
 
-          <?php if (isset($user['statut']) && in_array($user['statut'], ['gestionnaire', 'Admin'])): ?>
-            <a class="account-item" href="?controleur=Article&action=AjouterMenu">
-              <i class="bi bi-plus-circle fs-5"></i> <span>Ajouter un menu</span>
-            </a>
-          <?php endif; ?>
 
           <?php if (isset($user['statut']) && in_array($user['statut'], ['gestionnaire', 'Admin'])): ?>
-            <a class="account-item" href="?controleur=gestion&action=index">
+            <a class="account-item" href="?controleur=gestion&action=panel">
                 <i class="bi bi-tools fs-5"></i> <span>Gestion</span>
             </a>
         <?php endif; ?>

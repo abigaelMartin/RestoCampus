@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="css/reservation.css" />
-
+<?php include '../app/views/layout/header.php'?>
 <section id="menu" class="py-5 bg-light">
   <div class="container">
 

@@ -1,6 +1,5 @@
 <?php
 
-
 // Sécurité : redirection si l'utilisateur n'est pas connecté
 if (!isset($_SESSION['user'])) {
     header("Location: /RestoCampus/public/?controleur=auth&action=login");
@@ -42,8 +41,7 @@ switch ($action) {
 
             }
 
-           
-           
+
         }
         break;
     case 'mesreservations':
@@ -61,9 +59,6 @@ switch ($action) {
         $act = Reservation::annuler($id, $id_Art);
         header("Location: /RestoCampus/public/?controleur=reservation&action=mesreservations");
         break;
-
-
-    
 
     default:
         echo "Action non reconnue.";
