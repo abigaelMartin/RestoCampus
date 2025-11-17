@@ -9,7 +9,7 @@ $user = $_SESSION['user'] ?? [];
 function h(string $value = null) {
   return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
-include "../app/views/layout/header.php";
+
 ?>
 
 
@@ -230,5 +230,5 @@ include "../app/views/layout/header.php";
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <?php
 // Adapter le chemin si besoin :
-require __DIR__ . '/layout/footer.php';
+
 ?>

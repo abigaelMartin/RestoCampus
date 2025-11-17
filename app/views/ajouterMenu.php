@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<?php include "../app/views/layout/header.php" ?>
+
 
 
 <div class="container py-5">
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-  <form method="post" enctype="multipart/form-data" action="?controleur=article&action=AjouterUnMenu"  class="card p-4 shadow-sm bg-white">
+  <form method="post" enctype="multipart/form-data" action="?controleur=Menu&action=AjouterUnMenu"  class="card p-4 shadow-sm bg-white">
 
     <div class="mb-3">
       <label for="nom" class="form-label">Nom du menu</label>
@@ -101,4 +101,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-<?php include "../app/views/layout/footer.php" ?>

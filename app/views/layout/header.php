@@ -152,6 +152,12 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
             </a>
           <?php endif; ?>
 
+          <?php if (isset($user['statut']) && in_array($user['statut'], ['gestionnaire', 'Admin'])): ?>
+            <a class="account-item" href="?controleur=gestion&action=index">
+                <i class="bi bi-tools fs-5"></i> <span>Gestion</span>
+            </a>
+        <?php endif; ?>
+
 
             <a class="account-item" href="?controleur=auth&action=profil">
               <i class="bi bi-person fs-5"></i> <span>Profil</span>
