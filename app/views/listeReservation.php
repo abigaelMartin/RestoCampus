@@ -18,14 +18,14 @@ $title = $title ?? 'Gestion des réservations';
 function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 function euro($n){ return number_format((float)$n, 2, ',', ' ') . ' €'; }
 function badge($s){
-  return match($s){
-    'confirmee' => '<span class="badge text-bg-success"><i class="bi bi-check2-circle me-1"></i>Confirmée</span>',
-    'en_attente'=> '<span class="badge text-bg-warning"><i class="bi bi-hourglass-split me-1"></i>En attente</span>',
-    'retiree'   => '<span class="badge text-bg-primary"><i class="bi bi-bag-check me-1"></i>Retirée</span>',
-    'preparee'  => '<span class="badge text-bg-info text-dark"><i class="bi bi-clipboard-check me-1"></i>Préparée</span>',
-    'annulee'   => '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Annulée</span>',
-    default     => '<span class="badge text-bg-light text-dark">'.e($s).'</span>'
-  };
+  switch($s){
+    case 'confirmee': return '<span class="badge text-bg-success"><i class="bi bi-check2-circle me-1"></i>Confirmée</span>';
+    case 'en_attente': return '<span class="badge text-bg-warning"><i class="bi bi-hourglass-split me-1"></i>En attente</span>';
+    case 'retiree': return '<span class="badge text-bg-primary"><i class="bi bi-bag-check me-1"></i>Retirée</span>';
+    case 'preparee': return '<span class="badge text-bg-info text-dark"><i class="bi bi-clipboard-check me-1"></i>Préparée</span>';
+    case 'annulee': return '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Annulée</span>';
+    default: return '<span class="badge text-bg-light text-dark">'.e($s).'</span>';
+  }
 }
 ?>
 

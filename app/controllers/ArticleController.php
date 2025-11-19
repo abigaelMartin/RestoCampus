@@ -6,39 +6,40 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-// Connexion au modèle
+// Connexion aux modèles
 require_once(__DIR__ . '/../models/Reservation.php');
+require_once(__DIR__ . '/../models/Article.php'); // pour pouvoir lister les articles
 
 // Récupération de l'action
 $action = $_GET['action'] ?? 'liste';
 
 // Contrôleur basé sur switch
 switch ($action) {
-        
+    
     case 'AjouterUnArticle':
-        // Traitement de la réservation
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $libelle = filter_input(INPUT_POST, 'nom_menu',FILTER_SANITIZE_SPECIAL_CHARS );
-            $ing = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_SPECIAL_CHARS);
+            $libelle = filter_input(INPUT_POST, 'nom_menu', FILTER_SANITIZE_SPECIAL_CHARS);
+            $ing     = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_SPECIAL_CHARS);
 
-            // Appel au modèle pour enregistrer la réservation
-            require_once(__DIR__ . '/../models/Article.php');
             $addMenu = Article::AjouterUnArticle($libelle, $ing);
             if ($addMenu) {
-                echo "Réservation enregistrée ✅";
                 header("Location: /RestoCampus/public/?controleur=article&action=AjouterUnArticle");
                 exit;
             } else {
-                echo "Erreur lors de la réservation ❌";
+                echo "Erreur lors de l'ajout de l'article ❌";
                 exit;
-
             }
 
-        }else{
+        } else {
             require(__DIR__ . '/../views/ajouterArticle.php');
-        break;
         }
         break;
+
+    case 'liste':  // ← Nouvelle case pour lister les articles
+        $articles = Article::getAllArticles(); // Méthode à créer dans le modèle
+        require(__DIR__ . '/../views/listeArticles.php'); // Vue qui affichera le tableau
+        break;
+
     default:
         echo "Action non reconnue.";
         break;

@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include '../app/views/layout/header.php'?>
 <div class="container py-5">
     <h1 class="mb-4 text-center">
-      <i class="bi bi-plus-circle me-2"></i>Ajouter un menu
+      <i class="bi bi-plus-circle me-2"></i>Ajouter un article
     </h1>
 
     <?php if ($success): ?>
@@ -82,10 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <textarea id="ingredients" name="ingredients" class="form-control" rows="4" placeholder="Liste des ingrédients..." required></textarea>
     </div>
 
-    <!-- <div class="mb-3">
+    <div class="mb-3">
       <label for="photo" class="form-label">Photo du menu</label>
       <input type="file" id="photo" name="photo" class="form-control" accept="image/*">
-    </div> -->
+      <small class="text-muted">Formats acceptés : jpg, png, jpeg. Taille max : 2 Mo</small>
+    </div>
 
     <div class="d-flex justify-content-between">
       <a href="?controleur=gestion&action=panel" class="btn btn-outline-secondary">← Retour</a>
