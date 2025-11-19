@@ -36,7 +36,13 @@ $title = 'Liste des articles';
                     <tbody>
                         <?php foreach ($articles as $art): ?>
                             <tr>
-                                <td><?= e($art['id']) ?></td>
+                                <?php
+                                // Fonction pour échapper les caractères HTML
+                                function e($v){
+                                    return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
+                                }
+                                ?>
+                                <td><?= e($art['id_article']) ?></td>
                                 <td><?= e($art['libelleArt']) ?></td>
                                 <td><?= e($art['Description']) ?></td>
                                 <td class="text-end">
