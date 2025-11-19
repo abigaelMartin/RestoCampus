@@ -51,6 +51,13 @@ function badge($s){
   </div>
 </header>
 
+<div class="my-3">
+  <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+    <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+    Retour 
+  </a>
+</div>
+
 <section class="py-4">
   <div class="container">
     <!-- KPIs -->

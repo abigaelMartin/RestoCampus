@@ -1,4 +1,4 @@
-<?php
+ <?php
 // --- Sécurité : accès réservé aux gestionnaires / admins ---
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
@@ -54,23 +54,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 ?>
+
 <?php include '../app/views/layout/header.php'?>
+
 <div class="container py-5">
-    <h1 class="mb-4 text-center">
-      <i class="bi bi-plus-circle me-2"></i>Ajouter un article
-    </h1>
 
-    <?php if ($success): ?>
-      <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-    <?php endif; ?>
+  <!-- Bouton Retour -->
+  <div class="my-3">
+    <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+      <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+      Retour
+    </a>
+  </div>
 
-    <?php if ($error): ?>
-      <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
+  
+  <h1 class="mb-4 text-center">
+    <i class="bi bi-plus-circle me-2"></i>Ajouter un article
+  </h1>
 
+  <?php if ($success): ?>
+    <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+  <?php endif; ?>
 
+  <?php if ($error): ?>
+    <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+  <?php endif; ?>
 
-  <form method="post" enctype="multipart/form-data" action="?controleur=Article&action=AjouterUnArticle"  class="card p-4 shadow-sm bg-white">
+  <form method="post" enctype="multipart/form-data" action="?controleur=Article&action=AjouterUnArticle" class="card p-4 shadow-sm bg-white">
 
     <div class="mb-3">
       <label for="nom" class="form-label">Nom du menu</label>
@@ -89,7 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <div class="d-flex justify-content-between">
-      <a href="?controleur=gestion&action=panel" class="btn btn-outline-secondary">← Retour</a>
       <button type="submit" class="btn btn-success">
         <i class="bi bi-check-lg me-1"></i>Enregistrer
       </button>
@@ -98,4 +107,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </form>
 
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

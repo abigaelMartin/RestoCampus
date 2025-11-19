@@ -20,6 +20,21 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
   <title>RestoCampus</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- favicon classique -->
+  <link rel="icon" type="image/x-icon" href="/public/images/favicon_io/fivacon.ico">
+
+  <!-- favicon PNG (optionnel, plus moderne) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/images/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/images/favicon_io/favicon-16x16.png">
+
+  <!-- Apple touch icon (iOS) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/images/favicon_io/apple-touch-icon.png">
+
+  <link rel="shortcut icon" href="/public/images/favicon_io/fivacon.ico" type="image/x-icon">
+
+  
+
   <style>
     :root { --brand:#0ea5e9; --brand-2:#22c55e; --ink:#0f172a; }
 

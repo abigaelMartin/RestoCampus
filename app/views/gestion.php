@@ -58,6 +58,8 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
   /* 3 colonnes desktop, 2 tablette, 1 mobile => via Bootstrap classes dans le HTML */
 </style>
 <?php include '../app/views/layout/header.php'?>
+
+
 <!-- En-tête -->
 <header class="panel-head py-4">
   <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
@@ -67,6 +69,13 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
     </div>
   </div>
 </header>
+
+<div class="my-3">
+  <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+    <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+    Retour 
+  </a>
+</div>
 
 <section class="py-4">
   <div class="container">
