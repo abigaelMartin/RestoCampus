@@ -121,7 +121,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
   <div class="container">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="?controleur=reservation&action=liste">
       <i class="bi bi-egg-fried me-1"></i> RestoCampus
     </a>
 

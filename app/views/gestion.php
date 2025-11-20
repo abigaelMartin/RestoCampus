@@ -177,15 +177,15 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       
       <!-- 6 Créneaux de retrait -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=creneaux&action=gestion">
+        <a class="tile" href="?controleur=gestionReservation&action=proposition">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-clock-history fs-5"></i></span>
               <i class="bi bi-chevron-right chev"></i>
             </div>
             <div class="pt-2">
-              <h3>Créneaux de retrait</h3>
-              <p>Gérer horaires, quotas et fermeture.</p>
+              <h3>Proposition de menu du jour</h3>
+              <p>Rendre disponible les menus, pour la reservation.</p>
             </div>
           </div>
         </a>
@@ -209,7 +209,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 8 Exportations -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=export&action=csv">
+        <a class="tile" href="?controleur=user&action=liste">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-filetype-csv fs-5"></i></span>

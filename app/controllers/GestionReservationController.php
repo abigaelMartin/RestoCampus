@@ -31,8 +31,12 @@ switch ($action) {
         require(__DIR__ . '/../views/ajouterMenu.php');
         break;
     case 'detail':
-         require(__DIR__ . '/../views/showDetail.php');
-         break;
+        require(__DIR__ . '/../views/showDetail.php');
+        break;
+    case 'proposition':
+        $Proposition = GestionReservation::getProposition(); // méthode à créer dans Menu.php
+    require(__DIR__ . '/../views/propositionMenu.php');
+        break;
     default:
         echo "Action non reconnue pour gestion.";
         break;

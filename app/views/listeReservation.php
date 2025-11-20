@@ -65,7 +65,6 @@ function badge($s){
     <div class="row g-3 mb-3">
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Total</div><div class="h4 mb-0"><?= (int)($stats['total'] ?? count($reservations ?? [])) ?></div></div></div>
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Aujourd'hui</div><div class="h4 mb-0"><?= (int)($stats['aujourd_hui'] ?? 0) ?></div></div></div>
-      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">En attente</div><div class="h4 mb-0"><?= (int)($stats['en_attente'] ?? 0) ?></div></div></div>
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Confirmées</div><div class="h4 mb-0"><?= (int)($stats['confirmees'] ?? 0) ?></div></div></div>
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Préparées</div><div class="h4 mb-0"><?= (int)($stats['preparees'] ?? 0) ?></div></div></div>
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Retirées</div><div class="h4 mb-0"><?= (int)($stats['retirees'] ?? 0) ?></div></div></div>
@@ -75,9 +74,12 @@ function badge($s){
     <form class="row gy-2 gx-3 align-items-end mb-3" method="get" action="gestion_reservations.php">
       <div class="col-sm-6 col-md-3">
         <label class="form-label">Recherche</label>
-        <input type="search" class="form-control" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Nom élève, plat, réf…">
+       <input type="search"
+                id="searchCommandes"
+                class="form-control"
+                placeholder="Rechercher par nom, prénom ou login…">
       </div>
-      <div class="col-sm-6 col-md-3">
+      <!-- <div class="col-sm-6 col-md-3">
         <label class="form-label">Date (du)</label>
         <input type="date" class="form-control" name="du" value="<?= e($_GET['du'] ?? '') ?>">
       </div>
@@ -102,7 +104,7 @@ function badge($s){
           <i class="bi bi-x-circle me-1"></i>Réinitialiser
         </button>
         <button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Filtrer</button>
-      </div>
+      </div> -->
     </form>
 
     <!-- Actions groupées -->
@@ -126,17 +128,15 @@ function badge($s){
       </div>
 
       <div class="table-responsive mt-3">
-        <table class="table align-middle">
+        <table class="table align-middle" id="CommandeTable">
           <thead class="table-light">
             <tr>
               <th style="width:36px"><input class="form-check-input" type="checkbox" id="checkMaster"></th>
               <th>Réf.</th>
-              <th>Élève</th>
-              <th>Classe</th>
+              <th>Nom Élève</th>
               <th>Plat</th>
               <th class="text-center">Qté</th>
               <th>Retrait</th>
-              <th>Prix</th>
               <th>Statut</th>
               <th class="text-end">Action</th>
             </tr>
@@ -146,15 +146,13 @@ function badge($s){
             <tr><td colspan="10" class="text-center text-muted py-5">Aucune réservation pour les critères sélectionnés.</td></tr>
           <?php else: ?>
             <?php foreach ($reservations as $r):
-              $id    = $r['id'] ?? null;
+              $id    = $r['id_commande'] ?? null;
               $ref   = e($r['ref'] ?? ('R-'.$id));
-              $nom   = e(($r['eleve_prenom'] ?? '').' '.($r['eleve_nom'] ?? ''));
-              $classe= e($r['classe'] ?? '—');
-              $plat  = e($r['plat'] ?? '—');
-              $qte   = (int)($r['quantite'] ?? 1);
-              $prixU = (float)($r['prix'] ?? 0);
+              $nom   = e(($r['login'] ?? '').' '.($r['login'] ?? ''));
+              $plat  = e($r['libelleArt'] ?? '—');
+              $qte   = (int)($r['qte'] ?? 1);
               $date  = e($r['date'] ?? '');
-              $heure = e($r['heure_retrait'] ?? '');
+              $heure = e($r['date_du_jour'] ?? '');
               $stat  = $r['statut'] ?? '';
             ?>
             <tr>
@@ -164,14 +162,10 @@ function badge($s){
                 <div class="fw-semibold"><?= $nom ?></div>
                 <?php if (!empty($r['email'])): ?><small class="text-muted"><i class="bi bi-envelope me-1"></i><?= e($r['email']) ?></small><?php endif; ?>
               </td>
-              <td><?= $classe ?></td>
               <td><?= $plat ?></td>
               <td class="text-center"><?= $qte ?></td>
               <td><i class="bi bi-calendar-date me-1"></i><?= $date ?> · <i class="bi bi-clock ms-1 me-1"></i><?= $heure ?></td>
-              <td>
-                <div><?= euro($prixU) ?> <small class="text-muted">/u</small></div>
-                <small class="text-muted">Total : <?= euro($prixU*$qte) ?></small>
-              </td>
+             
               <td><?= badge($stat) ?></td>
               <td class="text-end">
                 <div class="btn-group" role="group">
@@ -225,7 +219,24 @@ function badge($s){
   </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+    const input = document.getElementById("searchCommandes");
+    const table = document.getElementById("CommandeTable");
+    const rows  = table.querySelectorAll("tbody tr");
+
+    input.addEventListener("input", () => {
+        const q = input.value.toLowerCase().trim();
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(q) ? "" : "none";
+        });
+    });
+
+});
+</script>
 <script>
   // Sélection master
   const master = document.getElementById('checkMaster');
