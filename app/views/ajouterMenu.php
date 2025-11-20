@@ -1,65 +1,85 @@
-<?php include '../app/views/layout/header.php'?>
-<div class="container py-5">
+<?php 
+// Sécurité
+if (!isset($_SESSION['user'])) {
+    header("Location: /RestoCampus/public/?controleur=auth&action=login");
+    exit;
+}
+
+$title = "Ajouter un menu";
+
+// petite fonction d'échappement
+if (!function_exists('e')) {
+    function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
+}
+?>
+
+<?php include '../app/views/layout/header.php'; ?>
+
+<div class="container py-4">
+
+    <!-- Bouton Retour -->
+    <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=menu&action=liste' ?>" 
+       class="btn btn-outline-primary mb-4" style="display:inline-flex;align-items:center;">
+        <i class="bi bi-arrow-left-circle me-2 fs-5"></i> Retour
+    </a>
+
     <h1 class="mb-4 text-center">
-        <i class="bi bi-plus-square me-2"></i>Ajouter un article
-    </h1>
+    <i class="bi bi-plus-circle me-2"></i>Ajouter un menu
+  </h1>
 
-    <!-- Messages succès / erreur -->
-    <?php if (!empty($success)): ?>
-        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-    <?php endif; ?>
-    <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
+    <form action="?controleur=menu&action=ajouter" method="POST" class="card p-4 shadow-sm">
 
-    <form method="post" action="?controleur=AjouterArticle&action=EnregistrerArticle" class="card p-4 shadow-sm bg-white">
-
+        <!-- Nom du menu -->
         <div class="mb-3">
-            <label for="nom_article" class="form-label">Nom de l'article</label>
-            <input type="text" id="nom_article" name="nom_article" class="form-control" placeholder="Ex : Poulet rôti" required>
+            <label class="form-label fw-semibold">Nom du menu :</label>
+            <input type="text" name="nom_menu" class="form-control" required>
         </div>
 
+        <!-- Description -->
         <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea id="description" name="description" class="form-control" rows="4" placeholder="Description de l'article..." required></textarea>
+            <label class="form-label fw-semibold">Description :</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
         </div>
 
+        <!-- Articles / ingrédients -->
         <div class="mb-3">
-            <label class="form-label">Associer aux menus</label>
-            <div class="d-flex flex-column gap-1">
-                <?php if (!empty($menus)): ?>
-                    <?php foreach ($menus as $menu): ?>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="menus[]" value="<?= $menu['id'] ?>" id="menu<?= $menu['id'] ?>">
-                            <label class="form-check-label" for="menu<?= $menu['id'] ?>">
-                                <?= htmlspecialchars($menu['nom']) ?>
-                            </label>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="text-muted">Aucun menu disponible. Ajoutez d'abord un menu.</div>
-                <?php endif; ?>
+            <label class="form-label fw-semibold">Sélection des articles du menu :</label>
+
+            <?php if (empty($articles)): ?>
+                <p class="text-muted">Aucun article disponible. <a href="?controleur=article&action=AjouterUnArticle">Créer un article</a></p>
+            <?php else: ?>
+
+            <div class="row g-3">
+                <?php foreach ($articles as $a): ?>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <label class="card p-3 shadow-sm border rounded d-flex gap-3" 
+                               style="cursor:pointer;">
+                            
+                            <input type="checkbox" 
+                                   name="articles[]" 
+                                   value="<?= e($a['id_article']) ?>" 
+                                   class="form-check-input mt-1">
+
+                            <div>
+                                <strong><?= e($a['libelleArt']) ?></strong><br>
+                                <small class="text-muted"><?= e($a['Description']) ?></small>
+                            </div>
+
+                        </label>
+                    </div>
+                <?php endforeach; ?>
             </div>
+
+            <?php endif; ?>
         </div>
 
-        <div class="d-flex justify-content-between mt-4">
-            <a href="?controleur=Gestion&action=index" class="btn btn-outline-secondary">← Retour</a>
-            <button type="submit" class="btn btn-success">
-                <i class="bi bi-check-lg me-1"></i>Enregistrer
-            </button>
-        </div>
+        <!-- Bouton -->
+        <button type="submit" class="btn btn-success mt-3">
+            <i class="bi bi-check-circle me-1"></i> Créer le menu
+        </button>
 
     </form>
+
 </div>
 
-<style>
-.card {
-    border-radius: 1rem;
-    border: 1px solid rgba(15,23,42,.08);
-    box-shadow: 0 3px 10px rgba(0,0,0,.04);
-}
-
-.form-check-input, .form-check-label {
-    cursor: pointer;
-}
-</style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

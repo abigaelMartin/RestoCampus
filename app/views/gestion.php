@@ -111,19 +111,21 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 2 Ajouter un menu -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=AjouterArticle&action=Ajoutermenu">
-          <div class="card p-3">
+    <a class="tile" href="?controleur=menu&action=ajouter">
+        <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
-              <span class="icon-badge"><i class="bi bi-plus-square fs-5"></i></span>
-              <i class="bi bi-chevron-right chev"></i>
+                <span class="icon-badge">
+                    <i class="bi bi-plus-square fs-5"></i>
+                </span>
+                <i class="bi bi-chevron-right chev"></i>
             </div>
             <div class="pt-2">
-              <h3>Ajouter un menu</h3>
-              <p>Composer le plat du jour et le publier.</p>
+                <h3>Ajouter un menu</h3>
+                <p>Composer le plat du jour et le publier.</p>
             </div>
-          </div>
-        </a>
-      </div>
+        </div>
+    </a>
+</div>
 
       <!-- 3 Voir les réservations -->
       <div class="col-12 col-sm-6 col-lg-4">
