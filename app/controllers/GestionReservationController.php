@@ -15,7 +15,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 }
 
 // Récupération de l’action
-$action = $_GET['action'] ?? 'panel';
+$action = $_GET['action'] ?? 'liste';
 
 // fichier models
 require_once(__DIR__ . '/../models/GestionReservation.php');
@@ -24,8 +24,8 @@ switch ($action) {
 
     case 'liste':
         // affiche la liste des reservation
-        $reservations = GestionReservation::getReservation(); // méthode à créer dans Menu.php
-        require(__DIR__ . '/../views/ListeReservation.php'); // vue à créer pour afficher les menus
+        $reservations = GestionReservation::getReservation();
+        require(__DIR__ . '/../views/ListeReservation.php'); 
         break;
     case 'listes':
         require(__DIR__ . '/../views/ajouterMenu.php');
@@ -33,10 +33,7 @@ switch ($action) {
     case 'detail':
         require(__DIR__ . '/../views/showDetail.php');
         break;
-    case 'proposition':
-        $Proposition = GestionReservation::getProposition(); // méthode à créer dans Menu.php
-    require(__DIR__ . '/../views/propositionMenu.php');
-        break;
+   
     default:
         echo "Action non reconnue pour gestion.";
         break;

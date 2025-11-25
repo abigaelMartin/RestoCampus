@@ -5,17 +5,23 @@ if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['statut'] ?? '', ['
     exit;
 }
 
-$title = $title ?? 'Proposition des articles du jour';
+$title = $title ?? 'Proposer les articles du jour';
 
-// Helpers
+// Helper
 if (!function_exists('e')) {
     function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
 }
 
-// $dateJour : date sélectionnée (format Y-m-d) transmise par le contrôleur
-$dateJour = $dateJour ?? date('Y-m-d');
+// Valeurs par défaut
+$dateJour   = $dateJour   ?? date('Y-m-d');
+$heureDebut = $heureDebut ?? '11:45';
+$heureFin   = $heureFin   ?? '13:30';
 
-// $csrf_token optionnel
+// $articles attendu depuis le contrôleur :
+// $articles = [
+//   ['id_article'=>1,'libelleArt'=>'Salade César','description'=>'...','img'=>'salade.jpg'],
+//   ...
+// ];
 ?>
 
 <?php include '../app/views/layout/header.php'; ?>
@@ -46,19 +52,18 @@ $dateJour = $dateJour ?? date('Y-m-d');
   }
 </style>
 
-<!-- En-tête -->
 <header class="page-head py-4 mb-3">
   <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div>
-      <h1 class="h4 fw-bold mb-1">Proposition des articles du jour</h1>
+      <h1 class="h4 fw-bold mb-1">Proposer des articles pour un créneau</h1>
       <p class="mb-0 text-muted">
-        Sélectionnez la date, puis cochez les articles qui seront réservable pour cette journée.
+        Choisissez la date et le créneau horaire, puis cochez les articles à rendre disponibles.
       </p>
     </div>
     <div class="text-end">
       <span class="badge-soft">
         <i class="bi bi-info-circle me-1"></i>
-        Un article coché est ajouté dans <code>PropositionArticleJour</code> pour la date choisie.
+        Un enregistrement = (article, date, heure début, heure fin, qte).
       </span>
     </div>
   </div>
@@ -67,44 +72,56 @@ $dateJour = $dateJour ?? date('Y-m-d');
 <section class="py-3">
   <div class="container">
 
-    <!-- Formulaire principal -->
-    <form method="post" action="/RestoCampus/public/?controleur=proposition&action=enregistrerJour">
-      <?php if (!empty($csrf_token)): ?>
-        <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
+    <form method="post" action="/RestoCampus/public/?controleur=proposition&action=addproposition">
+      <?php if (!empty($_SESSION['csrf'])): ?>
+        <input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>">
       <?php endif; ?>
 
-      <!-- Date du jour -->
+      <!-- Date + créneau -->
       <div class="row g-3 mb-4 align-items-end">
         <div class="col-md-4">
-          <label class="form-label fw-semibold">Date concernée</label>
+          <label class="form-label fw-semibold">Date</label>
           <input type="date"
                  class="form-control"
-                 name="date_jour"
-                 value="<?= e($date_du_Jour) ?>"
+                 name="date_du_jour"
+                 value="<?= e($dateJour) ?>"
                  required>
         </div>
-
-        <div class="col-md-8 text-md-end">
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Heure début</label>
+          <input type="time"
+                 class="form-control"
+                 name="heure_deb"
+                 value="<?= e($heureDebut) ?>"
+                 required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label fw-semibold">Heure fin</label>
+          <input type="time"
+                 class="form-control"
+                 name="heure_fin"
+                 value="<?= e($heureFin) ?>"
+                 required>
+        </div>
+        <div class="col-md-2 text-md-end">
           <button type="submit" class="btn btn-primary mt-3 mt-md-0">
-            <i class="bi bi-floppy me-1"></i>Enregistrer la proposition
+            <i class="bi bi-floppy me-1"></i>Enregistrer
           </button>
         </div>
       </div>
 
       <?php if (empty($articles)): ?>
         <div class="alert alert-info">
-          Aucun article trouvé dans la base de données. Commencez par ajouter des articles.
+          Aucun article trouvé. Ajoutez d’abord des articles dans la base.
         </div>
       <?php else: ?>
 
         <div class="mb-2 small text-muted">
           <i class="bi bi-lightbulb me-1"></i>
-          Pour chaque article :
-          cochez la case pour le rendre disponible à la date choisie,
-          et indiquez la quantité réservable (<code>qte</code> dans <code>PropositionArticleJour</code>).
+          Cochez les articles à proposer pour ce créneau et indiquez la quantité max réservable (<code>qte</code>).
         </div>
 
-        <!-- Boutons de sélection -->
+        <!-- Boutons tout cocher/décocher -->
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
           <div class="d-flex flex-wrap gap-2">
             <button type="button" class="btn btn-sm btn-outline-secondary" id="checkAll">
@@ -115,11 +132,11 @@ $dateJour = $dateJour ?? date('Y-m-d');
             </button>
           </div>
           <div class="small text-muted">
-            <span id="selectedCount">0</span> article(s) sélectionné(s) pour cette date.
+            <span id="selectedCount">0</span> article(s) sélectionné(s) pour ce créneau.
           </div>
         </div>
 
-        <!-- Table des articles -->
+        <!-- Liste des articles -->
         <div class="table-responsive">
           <table class="table align-middle table-hover">
             <thead class="table-light">
@@ -136,56 +153,49 @@ $dateJour = $dateJour ?? date('Y-m-d');
                 <?php
                   $id          = $art['id_article'];
                   $libelle     = $art['libelleArt']   ?? '';
-                  $description = $art['Description']  ?? ($art['Description'] ?? '');
+                  $description = $art['description']  ?? ($art['Description'] ?? '');
                   $img         = $art['img']          ?? null;
 
-                  // bool : déjà proposé pour cette date (jointure faite en amont par le contrôleur)
-                  $propose = !empty($art['propose']);
-
-                  // qte actuelle dans PropositionArticleJour (ou vide s'il n'y a pas encore de ligne)
-                  $qte = $art['qte_max'] ?? '';
-
-                  // URL de l'image (à adapter selon ton arborescence)
                   $imageUrl = !empty($img)
                     ? '/RestoCampus/public/uploads/articles/' . $img
                     : '/RestoCampus/public/assets/img/article-placeholder.jpg';
                 ?>
                 <tr>
-                  <!-- Checkbox proposer -->
+                  <!-- Checkbox -->
                   <td>
                     <input class="form-check-input article-check"
                            type="checkbox"
                            name="articles[<?= e($id) ?>][propose]"
-                           value="1"
-                           <?= $propose ? 'checked' : '' ?>>
+                           value="<?= e($id) ?>">
                   </td>
+                  
+                  
 
                   <!-- Image -->
                   <td>
                     <img src="<?= e($imageUrl) ?>" alt="Image de <?= e($libelle) ?>" class="thumb-article">
                   </td>
 
-                  <!-- Libellé + ID -->
+                  <!-- Libellé -->
                   <td>
                     <div class="fw-semibold"><?= e($libelle) ?></div>
                     <small class="text-muted">ID : <?= e($id) ?></small>
                   </td>
 
-                  <!-- Description tronquée -->
+                  <!-- Description -->
                   <td>
                     <span class="desc-trunc" title="<?= e($description) ?>">
                       <?= e($description) ?>
                     </span>
                   </td>
 
-                  <!-- qte pour PropositionArticleJour -->
+                  <!-- Quantité : ATTENTION, liée à chaque article -->
                   <td>
                     <input type="number"
                            class="form-control form-control-sm"
                            name="articles[<?= e($id) ?>][qte]"
                            min="0"
-                           placeholder="ex : 20"
-                           value="<?= e($qte) ?>">
+                           placeholder="ex : 20">
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -195,11 +205,12 @@ $dateJour = $dateJour ?? date('Y-m-d');
 
       <?php endif; ?>
     </form>
+
   </div>
 </section>
 
 <script>
-  // Gestion tout cocher / décocher + compteur
+  // Gestion Tout cocher/décocher + compteur
   (function() {
     const checkAllBtn   = document.getElementById('checkAll');
     const uncheckAllBtn = document.getElementById('uncheckAll');
@@ -226,7 +237,6 @@ $dateJour = $dateJour ?? date('Y-m-d');
     }
     checks.forEach(cb => cb.addEventListener('change', updateCount));
 
-    // initialisation
     updateCount();
   })();
 </script>

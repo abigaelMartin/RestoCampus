@@ -179,7 +179,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       
       <!-- 6 Créneaux de retrait -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=gestionReservation&action=proposition">
+        <a class="tile" href="?controleur=proposition&action=liste">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-clock-history fs-5"></i></span>
