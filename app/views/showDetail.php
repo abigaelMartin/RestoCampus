@@ -1,227 +1,245 @@
 <?php
-// Vue : gestion_reservation_show.php
-// Attendu côté contrôleur :
-// $title = "Détail réservation";
-// $reservation = [
-//   'id' => 123,
-//   'ref' => 'R-123',
-//   'date' => '2025-11-05',
-//   'heure_retrait' => '12:15',
-//   'statut' => 'en_attente', // en_attente | confirmee | preparee | retiree | annulee
-//   'prix_total' => 7.5,
-//   'eleve_nom' => 'Dupont',
-//   'eleve_prenom' => 'Lucas',
-//   'classe' => 'TSTMG1',
-//   'email' => 'lucas.dupont@lycee.fr',
-// ];
-// $lignes = [
-//   ['plat'=>'Salade César','quantite'=>1,'prix'=>5.5],
-//   ['plat'=>'Dessert yaourt','quantite'=>1,'prix'=>2.0],
-// ];
-// $csrf_token (optionnel)
-
-$title = $title ?? 'Détail réservation';
-include 'header.php';
-
-function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
-function euro($n){ return number_format((float)$n, 2, ',', ' ') . ' €'; }
-function badgeStatut($s){
-  return match($s){
-    'confirmee' => '<span class="badge text-bg-success"><i class="bi bi-check2-circle me-1"></i>Confirmée</span>',
-    'en_attente'=> '<span class="badge text-bg-warning"><i class="bi bi-hourglass-split me-1"></i>En attente</span>',
-    'retiree'   => '<span class="badge text-bg-primary"><i class="bi bi-bag-check me-1"></i>Retirée</span>',
-    'preparee'  => '<span class="badge text-bg-info text-dark"><i class="bi bi-clipboard-check me-1"></i>Préparée</span>',
-    'annulee'   => '<span class="badge text-bg-secondary"><i class="bi bi-x-circle me-1"></i>Annulée</span>',
-    default     => '<span class="badge text-bg-light text-dark">'.e($s).'</span>',
-  };
+// Sécurité : accès gestionnaire ou admin
+if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['statut'] ?? '', ['gestionnaire','Admin'])) {
+    header("Location: /RestoCampus/public/?controleur=auth&action=login");
+    exit;
 }
 
-$r = $reservation;
+$title = $title ?? 'Détail de la réservation';
+
+// Helper
+if (!function_exists('e')) {
+    function e($v){ return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8'); }
+}
+
+
+// Sécurisation minimum
+$code        = $resa['id_commande']          ?? ('#'.$resa['id_reservation'] ?? '');
+$dateResa    = $resa['date_du_jour']     ?? null;
+
+$heureRetrait= $resa['heure_deb'] ?? null;
+$statut      = $resa['statutCmd']        ?? 'en_attente';
+$statutUser = $resa['statut'] ?? '';
+$commentaire = $resa['commentaire']   ?? '';
+
+$nomComplet  = trim(($resa['prenom'] ?? '').' '.($resa['nom'] ?? ''));
+$login       = $resa['login']  ?? '';
+$classe      = $resa['classe'] ?? 'BTS SIO 2';
+
+// Badge de statut
+$statutLabel = 'En attente';
+$statutClass = 'badge text-bg-warning';
+switch ($statut) {
+    case 'Confirmée':
+        $statutLabel = 'Confirmée';
+        $statutClass = 'badge text-bg-primary';
+        break;
+    case 'preparee':
+        $statutLabel = 'Préparée';
+        $statutClass = 'badge text-bg-info';
+        break;
+    case 'retiree':
+        $statutLabel = 'Retirée';
+        $statutClass = 'badge text-bg-success';
+        break;
+    case 'Annulée':
+        $statutLabel = 'Annulée';
+        $statutClass = 'badge text-bg-danger';
+        break;
+}
+
+include '../app/views/layout/header.php';
 ?>
+
 <style>
   .page-head{
     background:linear-gradient(to bottom right, rgba(14,165,233,.10), rgba(34,197,94,.10));
     border-bottom:1px solid #eef2f7;
   }
-  .card-soft{
-    border-radius:1rem;
-    border:1px solid #e5e7eb;
+  .kpi-chip{
+    border-radius:.75rem;
+    border:1px solid rgba(15,23,42,.06);
+    padding:.6rem .9rem;
+    background:#fff;
   }
 </style>
-<?php include '../app/views/layout/header.php'?>
-<header class="page-head py-4">
-  <div class="container d-flex flex-wrap align-items-center justify-content-between gap-3">
+
+<header class="page-head py-4 mb-4">
+  
+    <?php
+      // Sécurisation/normalisation
+      $id         = isset($res['id_reservation']) ? (int)$res['id_reservation'] : 0;
+      $libelle    = isset($res['libelleArt'])      ? trim($res['libelleArt']) : 'Plat';
+      $qte        = isset($res['qte'])             ? (int)$res['qte'] : 0;
+      $prixUnit   = isset($res['prix_unit'])      ? (float)$res['prix_unit'] : 0.0;
+    ?>
+ 
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div>
-      <h1 class="h4 fw-bold mb-1">Réservation #<?= e($r['ref'] ?? ('R-'.$r['id'])) ?></h1>
+      <a href="/RestoCampus/public/?controleur=GestionReservation&action=liste" class="btn btn-sm btn-outline-secondary mb-2">
+        <i class="bi bi-arrow-left me-1"></i> Retour à la liste
+      </a>
+      <h1 class="h4 fw-bold mb-1">
+        Réservation <?= e($code) ?>
+      </h1>
       <p class="mb-0 text-muted">
-        Date : <?= e($r['date'] ?? '—') ?> · Retrait : <?= e($r['heure_retrait'] ?? '—') ?>
+        Gérée par le self du lycée – détail complet de la commande de l'étudiant.
       </p>
     </div>
-    <div class="d-flex flex-column flex-sm-row gap-2 align-items-sm-center">
-      <span><?= badgeStatut($r['statut'] ?? '') ?></span>
-      <a href="/public/?controleur=reservation&action=liste" class="btn btn-outline-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i>Retour à la liste
-      </a>
+    <div class="text-end">
+      <span class="<?= $statutClass ?> mb-1 d-inline-block">
+        <i class="bi bi-circle-fill me-1" style="font-size:.55rem;"></i> <?= e($statut) ?>
+      </span>
+      <div class="small text-muted">
+        Créée le
+        <?= $dateResa ? e(date('d/m/Y H:i', strtotime($dateResa))) : '—' ?>
+      </div>
     </div>
   </div>
 </header>
 
-<section class="py-4">
+<section class="pb-5">
   <div class="container">
     <div class="row g-4">
-      <!-- Colonne de gauche : infos élève + réservation -->
+
+      <!-- Colonne gauche : infos élève + retrait -->
       <div class="col-lg-5">
-        <!-- Infos élève -->
-        <div class="card card-soft mb-3">
-          <div class="card-header bg-white border-0 pb-0">
-            <h2 class="h6 mb-0"><i class="bi bi-person me-1"></i> Élève</h2>
+        <div class="card mb-3">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <span class="fw-semibold"><i class="bi bi-person-badge me-1"></i> <?=  $statutUser ?></span>
           </div>
           <div class="card-body">
-            <p class="mb-1"><strong><?= e(($r['eleve_prenom'] ?? '').' '.($r['eleve_nom'] ?? '')) ?></strong></p>
-            <p class="mb-1 text-muted">
-              <i class="bi bi-mortarboard me-1"></i><?= e($r['classe'] ?? '—') ?>
-            </p>
-            <?php if (!empty($r['email'])): ?>
-              <p class="mb-0 text-muted"><i class="bi bi-envelope me-1"></i><?= e($r['email']) ?></p>
+            <p class="mb-1 fw-semibold"><?= e($nomComplet ?: $login) ?></p>
+            <?php if ($statutUser=="Etudiant"){ ?>
+              <p class="mb-1 text-muted"><i class="bi bi-mortarboard me-1"></i><?= e($classe) ?></p>
+            <?php }; ?>
+            <?php if ($login): ?>
+              <p class="mb-0 text-muted"><i class="bi bi-at me-1"></i><?= e($login) ?></p>
             <?php endif; ?>
           </div>
         </div>
 
-        <!-- Infos réservation -->
-        <div class="card card-soft">
-          <div class="card-header bg-white border-0 pb-0">
-            <h2 class="h6 mb-0"><i class="bi bi-info-circle me-1"></i> Informations réservation</h2>
+        <div class="card mb-3">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <span class="fw-semibold"><i class="bi bi-clock-history me-1"></i> Retrait</span>
           </div>
           <div class="card-body">
-            <dl class="row mb-0">
-              <dt class="col-5">Référence</dt>
-              <dd class="col-7">#<?= e($r['ref'] ?? ('R-'.$r['id'])) ?></dd>
-
-              <dt class="col-5">Date réservation</dt>
-              <dd class="col-7"><?= e($r['date'] ?? '—') ?></dd>
-
-              <dt class="col-5">Créneau</dt>
-              <dd class="col-7"><?= e($r['heure_retrait'] ?? '—') ?></dd>
-
-              <dt class="col-5">Statut</dt>
-              <dd class="col-7"><?= badgeStatut($r['statut'] ?? '') ?></dd>
-
-              <dt class="col-5">Montant total</dt>
-              <dd class="col-7"><strong><?= euro($r['prix_total'] ?? 0) ?></strong></dd>
-            </dl>
+            <div class="kpi-chip mb-2 d-flex justify-content-between align-items-center">
+              <span class="text-muted small">Date</span>
+              <span class="fw-semibold">
+                <?= $dateResa ? e(date('d/m/Y', strtotime($dateResa))) : '—' ?>
+              </span>
+            </div>
+            <div class="kpi-chip d-flex justify-content-between align-items-center">
+              <span class="text-muted small">Créneau</span>
+              <span class="fw-semibold">
+                <?= $heureRetrait ? e(substr($heureRetrait,0,5)) : '—' ?>
+              </span>
+            </div>
           </div>
         </div>
+
+        <?php if ($commentaire): ?>
+          <div class="card">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+              <span class="fw-semibold"><i class="bi bi-chat-left-text me-1"></i> Commentaire</span>
+            </div>
+            <div class="card-body">
+              <p class="mb-0"><?= nl2br(e($commentaire)) ?></p>
+            </div>
+          </div>
+        <?php endif; ?>
       </div>
 
-      <!-- Colonne de droite : détails + actions -->
+      <!-- Colonne droite : détail des plats -->
       <div class="col-lg-7">
-        <!-- Détail des plats -->
-        <div class="card card-soft mb-3">
-          <div class="card-header bg-white border-0 pb-0 d-flex justify-content-between align-items-center">
-            <h2 class="h6 mb-0"><i class="bi bi-bag me-1"></i> Détail des plats</h2>
+        <div class="card mb-3">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <span class="fw-semibold"><i class="bi bi-bag-check me-1"></i> Détail de la commande</span>
           </div>
-          <div class="card-body">
-            <?php if (empty($lignes)): ?>
-              <p class="text-muted mb-0">Aucune ligne trouvée pour cette réservation.</p>
+          <div class="card-body p-0">
+            <?php if (empty($resa)): ?>
+              <div class="p-3 text-muted">
+                Aucun article associé à cette réservation.
+              </div>
             <?php else: ?>
               <div class="table-responsive">
-                <table class="table align-middle mb-0">
+                <table class="table mb-0 align-middle">
                   <thead class="table-light">
                     <tr>
                       <th>Plat</th>
+                      <th>Description</th>
                       <th class="text-center">Qté</th>
-                      <th>Prix unitaire</th>
-                      <th>Total ligne</th>
+                    
                     </tr>
                   </thead>
                   <tbody>
-                    <?php foreach ($lignes as $ligne):
-                      $plat = e($ligne['plat'] ?? '—');
-                      $qte  = (int)($ligne['quantite'] ?? 1);
-                      $pu   = (float)($ligne['prix'] ?? 0);
-                      $pt   = $pu * $qte;
-                    ?>
+                    
+                      <?php
+                        $libelle = $resa['libelleArt'] ?? '';
+                        $description = $resa['Description'] ?? '';
+                        $qte     = (int)($resa['qte_cmd'] ?? 0);
+                       
+                       
+                      ?>
                       <tr>
-                        <td><?= $plat ?></td>
+                        <td><?= e($libelle) ?></td>
+                        <td><?= e($description) ?></td>
                         <td class="text-center"><?= $qte ?></td>
-                        <td><?= euro($pu) ?></td>
-                        <td><?= euro($pt) ?></td>
+                        
                       </tr>
-                    <?php endforeach; ?>
+                    
                   </tbody>
+                  <tfoot class="table-light">
+                    <tr>
+                      <th colspan="3" class="text-end">Total réservation</th>
+                     
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             <?php endif; ?>
           </div>
         </div>
 
-        <!-- Actions sur la réservation -->
-        <div class="card card-soft">
-          <div class="card-header bg-white border-0 pb-0">
-            <h2 class="h6 mb-0"><i class="bi bi-tools me-1"></i> Actions</h2>
+        <!-- Actions rapides sur la réservation -->
+        <div class="card">
+          <div class="card-header bg-white">
+            <span class="fw-semibold"><i class="bi bi-tools me-1"></i> Actions</span>
           </div>
-          <div class="card-body">
-            <div class="d-flex flex-wrap gap-2">
-              <?php
-                $id = e($r['id']);
-                $canCancel   = in_array($r['statut'], ['en_attente','confirmee']);
-                $canPrepare  = in_array($r['statut'], ['confirmee','en_attente']);
-                $canRetire   = in_array($r['statut'], ['preparee','confirmee']);
-              ?>
-
-              <!-- Confirmer -->
-              <form method="post" action="/public/?controleur=reservation&action=updateStatus">
-                <?php if (!empty($csrf_token)): ?>
-                  <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
-                <?php endif; ?>
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <input type="hidden" name="status" value="confirmee">
-                <button class="btn btn-outline-primary btn-sm" type="submit" <?= $r['statut']==='confirmee' ? 'disabled' : '' ?>>
-                  <i class="bi bi-check2-circle me-1"></i>Confirmer
+          <div class="card-body d-flex flex-wrap gap-2">
+            <?php if ($statut=="Confirmée"): ?>
+              <form method="post" action="/RestoCampus/public/?controleur=GestionReservation&action=marquerPreparee" class="me-2">
+                <input type="hidden" name="id_reservation" value="<?= (int)$resa['id_commande'] ?>">
+                <button class="btn btn-outline-primary btn-sm" type="submit">
+                  <i class="bi bi-clipboard-check me-1"></i> Marquer comme préparée
                 </button>
               </form>
 
-              <!-- Préparée -->
-              <form method="post" action="/public/?controleur=reservation&action=updateStatus">
-                <?php if (!empty($csrf_token)): ?>
-                  <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
-                <?php endif; ?>
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <input type="hidden" name="status" value="preparee">
-                <button class="btn btn-outline-info btn-sm" type="submit" <?= !$canPrepare ? 'disabled' : '' ?>>
-                  <i class="bi bi-clipboard-check me-1"></i>Marquer préparée
-                </button>
-              </form>
 
-              <!-- Retirée -->
-              <form method="post" action="/public/?controleur=reservation&action=updateStatus">
-                <?php if (!empty($csrf_token)): ?>
-                  <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
-                <?php endif; ?>
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <input type="hidden" name="status" value="retiree">
-                <button class="btn btn-outline-success btn-sm" type="submit" <?= !$canRetire ? 'disabled' : '' ?>>
-                  <i class="bi bi-bag-check me-1"></i>Marquer retirée
-                </button>
-              </form>
 
-              <!-- Annuler -->
-              <form method="post" action="/public/?controleur=reservation&action=cancel" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">
-                <?php if (!empty($csrf_token)): ?>
-                  <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
-                <?php endif; ?>
-                <input type="hidden" name="id" value="<?= $id ?>">
-                <button class="btn btn-outline-danger btn-sm" type="submit" <?= !$canCancel ? 'disabled' : '' ?>>
-                  <i class="bi bi-x-circle me-1"></i>Annuler
+              <form method="post" action="/RestoCampus/public/?controleur=GestionReservation&action=annuler" onsubmit="return confirm('Annuler cette réservation ?');">
+                <input type="hidden" name="id_commande" value="<?= (int)$resa['id_commande'] ?>">
+                <button class="btn btn-outline-danger btn-sm" type="submit">
+                  <i class="bi bi-x-circle me-1"></i> Annuler
                 </button>
               </form>
-            </div>
+            <?php elseif ($statut === 'Préparé'): ?>
+              <form method="post" action="/RestoCampus/public/?controleur=GestionReservation&action=marquerRetiree">
+                <input type="hidden" name="id_commande" value="<?= (int)$resa['id_commande'] ?>">
+                <button class="btn btn-success btn-sm" type="submit">
+                  <i class="bi bi-bag-check me-1"></i> Marquer comme retirée
+                </button>
+              </form>
+            <?php else: ?>
+              <span class="text-muted small">
+                Aucune action disponible pour ce statut.
+              </span>
+            <?php endif; ?>
           </div>
         </div>
-
       </div>
+
     </div>
   </div>
 </section>
-
-<?php include 'footer.php'; ?>

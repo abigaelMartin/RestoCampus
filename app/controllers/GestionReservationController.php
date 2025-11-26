@@ -31,10 +31,17 @@ switch ($action) {
         require(__DIR__ . '/../views/ajouterMenu.php');
         break;
     case 'detail':
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if (!$id) {
+            header("Location: /RestoCampus/public/?controleur=gestionReservation&action=liste");
+            exit;
+        }   
+        $resa = GestionReservation::getReservationById($id);
+        
         require(__DIR__ . '/../views/showDetail.php');
+       
         break;
-   
-    default:
+    default :
         echo "Action non reconnue pour gestion.";
         break;
 }

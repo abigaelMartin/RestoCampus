@@ -105,16 +105,17 @@ if (!function_exists('e')) {
 
                 // image : adapte le nom du champ ci-dessous à ta BDD
                 // par ex. $art['image'], $art['photo'], etc.
-                $imageUrl = !empty($art['image_url'])
-                  ? $art['image_url']
-                  : '/RestoCampus/public/assets/img/article-placeholder.jpg'; // image par défaut à créer si tu veux
+                $imageUrl = !empty($art['img'])
+                  ? '/RestoCampus/public/uploads/articles/' . $art['img']
+                  : '/RestoCampus/public/assets/img/article-placeholder.jpg';
+ // image par défaut à créer si tu veux
               ?>
               <tr>
                 <td><?= e($id) ?></td>
 
                 <!-- Colonne image -->
                 <td>
-                  <img src="<?= e($imageUrl) ?>" alt="Image de <?= e($libelle) ?>" class="thumb-article">
+                  <img src="<?= $imageUrl ?>" alt="Image de <?= e($libelle) ?>" class="thumb-article">
                 </td>
 
                 <td class="fw-semibold"><?= e($libelle) ?></td>

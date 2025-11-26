@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
   <?php endif; ?>
 
-  <form method="post" enctype="multipart/form-data" action="?controleur=Article&action=AjouterUnArticle" class="card p-4 shadow-sm bg-white">
+  <form method="post" enctype="multipart/form-data"  action="?controleur=Article&action=AjouterUnArticle" class="card p-4 shadow-sm bg-white">
 
     <div class="mb-3">
       <label for="nom" class="form-label">Nom du menu</label>

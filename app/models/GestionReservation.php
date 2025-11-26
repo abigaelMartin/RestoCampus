@@ -5,7 +5,7 @@ class GestionReservation {
 
     public static function getReservation() {
         global $conn;
-        $stmt = $conn->query("SELECT * FROM PropositionArticleJour 
+        $stmt = $conn->query("SELECT *, Commande.statut as statutReserv FROM PropositionArticleJour 
                               JOIN Article ON PropositionArticleJour.id_article = Article.id_article JOIN Commander ON PropositionArticleJour.id_ArtJour = Commander.id_ArtJour
                               JOIN Commande ON Commander.id_commande = Commande.id_commande
                               JOIN Utilisateur ON Commande.id_user = Utilisateur.id_user");
@@ -29,4 +29,20 @@ class GestionReservation {
         $stmt->bindParam(':qte', $qte);
         return $stmt->execute();
     }
-}
+
+    public static function getReservationById($id) {
+        global $conn;
+        $sql = "SELECT * , Commande.statut as statutCmd FROM PropositionArticleJour 
+                                JOIN Article ON PropositionArticleJour.id_article = Article.id_article 
+                                JOIN Commander ON PropositionArticleJour.id_ArtJour = Commander.id_ArtJour
+                                JOIN Commande ON Commander.id_commande = Commande.id_commande
+                                JOIN Utilisateur ON Commande.id_user = Utilisateur.id_user
+                                WHERE Commande.id_commande = :id";
+       
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+       
+  }
+    }

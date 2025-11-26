@@ -153,7 +153,7 @@ function badge($s){
               $qte   = (int)($r['qte'] ?? 1);
               $date  = e($r['date'] ?? '');
               $heure = e($r['date_du_jour'] ?? '');
-              $stat  = $r['statut'] ?? '';
+              $stat  = $r['statutReserv'] ?? '';
             ?>
             <tr>
               <td><input class="form-check-input" type="checkbox" name="ids[]" value="<?= e($id) ?>"></td>
@@ -169,7 +169,7 @@ function badge($s){
               <td><?= badge($stat) ?></td>
               <td class="text-end">
                 <div class="btn-group" role="group">
-                  <a class="btn btn-sm btn-outline-secondary" href="?controleur=GestionReservation&action=detail"><i class="bi bi-eye"></i></a>
+                  <a class="btn btn-sm btn-outline-secondary" href="?controleur=GestionReservation&action=detail&id=<?= $id ?>"><i class="bi bi-eye"></i></a>
 
                   <form method="post" action="/public/?controleur=reservation&action=updateStatus" class="d-inline">
                     <?php if (!empty($csrf_token)): ?><input type="hidden" name="csrf" value="<?= e($csrf_token) ?>"><?php endif; ?>
