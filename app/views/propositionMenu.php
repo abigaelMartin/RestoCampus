@@ -14,8 +14,8 @@ if (!function_exists('e')) {
 
 // Valeurs par défaut
 $dateJour   = $dateJour   ?? date('Y-m-d');
-$heureDebut = $heureDebut ?? '11:45';
-$heureFin   = $heureFin   ?? '13:30';
+$heureDebut = $heureDebut ?? '08:00';
+$heureFin   = $heureFin   ?? '11:30';
 
 // $articles attendu depuis le contrôleur :
 // $articles = [
@@ -62,8 +62,8 @@ $heureFin   = $heureFin   ?? '13:30';
     </div>
     <div class="text-end">
       <span class="badge-soft">
-        <i class="bi bi-info-circle me-1"></i>
-        Un enregistrement = (article, date, heure début, heure fin, qte).
+        <a href="/RestoCampus/public?controleur=proposition&action=liste" class="btn btn-primary mt-3 mt-md-0"> 
+          <i class="bi bi-eye me-1"></i>Voir propositions en cours</a>
       </span>
     </div>
   </div>
@@ -195,7 +195,9 @@ $heureFin   = $heureFin   ?? '13:30';
                            class="form-control form-control-sm"
                            name="articles[<?= e($id) ?>][qte]"
                            min="0"
+                           value="10"
                            placeholder="ex : 20">
+                           
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -208,7 +210,7 @@ $heureFin   = $heureFin   ?? '13:30';
 
   </div>
 </section>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <script>
   // Gestion Tout cocher/décocher + compteur
   (function() {

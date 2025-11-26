@@ -3,9 +3,10 @@ require_once(__DIR__ . '/../../config/bdd.php');
 
 class Proposition {
 
-    public static function getArtciles() {
+    public static function getPropositions(){
         global $conn;
-        $stmt = $conn->query("SELECT * FROM Article ");
+        $stmt = $conn->query("SELECT * FROM PropositionArticleJour 
+                              JOIN Article ON PropositionArticleJour.id_article = Article.id_article ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

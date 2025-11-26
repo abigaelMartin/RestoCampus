@@ -20,10 +20,11 @@ switch ($action) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $libelle = filter_input(INPUT_POST, 'nom_menu', FILTER_SANITIZE_SPECIAL_CHARS);
             $ing     = filter_input(INPUT_POST, 'ingredients', FILTER_SANITIZE_SPECIAL_CHARS);
+            $img = filter_input(INPUT_POST, 'img', FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $addMenu = Article::AjouterUnArticle($libelle, $ing);
+            $addMenu = Article::AjouterUnArticle($libelle, $ing, $img);
             if ($addMenu) {
-                header("Location: /RestoCampus/public/?controleur=article&action=AjouterUnArticle");
+                header("Location: /RestoCampus/public/?controleur=article&action=liste");
                 exit;
             } else {
                 echo "Erreur lors de l'ajout de l'article ❌";

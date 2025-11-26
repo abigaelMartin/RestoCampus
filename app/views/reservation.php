@@ -25,10 +25,12 @@
         <i class="bi bi-exclamation-triangle me-2"></i>
         <div>Aucun menu disponible pour le moment. Revenez plus tard ou contactez-nous pour plus d’informations.</div>
       </div>
-    <?php else: ?>
+    <?php  else: ?>
 
       <div class="row g-4" id="menusGrid">
-        <?php foreach ($menus as $menu): ?>
+        <?php
+        
+         foreach ($menus as $menu): ?>
           <?php
             // Sécuriser/normaliser
             
@@ -44,6 +46,7 @@
 
             $stock  = isset($menu['qte_max']) ? (int)$menu['qte_max'] : null;
             $idMenu = isset($menu['id_ArtJour']) ? (string)$menu['id_ArtJour'] : '';
+            
           ?>
 
 

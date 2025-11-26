@@ -23,8 +23,14 @@ require_once(__DIR__ . '/../models/Proposition.php');
 switch ($action) {
 
     case 'liste':
+        $propositions = Proposition::getPropositions();
+        require (__DIR__ . '/../views/GestionProposition.php');
+        break;
+
+    case 'proposer':
         // affiche la liste des reservation
-        $articles = Proposition::getArtciles();
+        require_once(__DIR__ . '/../models/Article.php');
+        $articles = Article::getAllArticles();
         require(__DIR__ . '/../views/propositionMenu.php'); 
         break;
 
@@ -77,9 +83,12 @@ switch ($action) {
             exit;
         }
         
+        
         require(__DIR__ . '/../views/propositionMenu.php');
         break;
-        
+    case 'deleteProposition':
+        // Code pour supprimer une proposition (à implémenter)
+        break;    
     default:
         echo "Action non reconnue pour gestion.";
         break;

@@ -18,7 +18,7 @@ switch ($action) {
         
         // Récupère tous les menus disponibles
         $menus = Reservation::getMenusDisponibles(); // méthode à créer dans Menu.php
-        require(__DIR__ . '/../views/reservation.php'); // vue à créer pour afficher les menus
+        require(__DIR__ . '/../views/reservation.php');
         break;
 
     case 'reserver':
@@ -40,8 +40,6 @@ switch ($action) {
                  exit;
 
             }
-
-
         }
         break;
     case 'mesreservations':

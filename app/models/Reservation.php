@@ -8,13 +8,15 @@ class Reservation {
     public static function getMenusDisponibles() {
         global $conn;
         $today = date('Y-m-d');
+       
         $sql = ("SELECT *
         FROM PropositionArticleJour 
         INNER JOIN Article  ON Article.id_article = PropositionArticleJour.id_article
-        WHERE date_du_jour = :today
+        WHERE date_du_jour = :today  AND heure_deb <= CURTIME() AND heure_fin >= CURTIME()
         ORDER BY heure_deb, libelleArt");
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+        // $stmt->bindValue(':now', $now, PDO::PARAM_STR);
         $stmt->execute();
         return $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
