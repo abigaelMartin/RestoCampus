@@ -166,7 +166,7 @@ $heureFin   = $heureFin   ?? '13:30';
                     <input class="form-check-input article-check"
                            type="checkbox"
                            name="articles[<?= e($id) ?>][propose]"
-                           value="<?= e($id) ?>">
+                           value="1">
                   </td>
                   
                   

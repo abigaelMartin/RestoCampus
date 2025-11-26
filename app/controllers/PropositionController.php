@@ -24,39 +24,59 @@ switch ($action) {
 
     case 'liste':
         // affiche la liste des reservation
-        $articles = Proposition::getProposition();
+        $articles = Proposition::getArtciles();
         require(__DIR__ . '/../views/propositionMenu.php'); 
         break;
 
     case 'addproposition':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Récupérer les données du formulaire
-            
-            echo $date_du_jour = filter_input(INPUT_POST, 'date_du_jour', FILTER_SANITIZE_SPECIAL_CHARS)."<br>";
-            echo $heure_deb    = filter_input(INPUT_POST, 'heure_deb',FILTER_SANITIZE_SPECIAL_CHARS)."<br>";
-            echo $heure_fin    = filter_input(INPUT_POST, 'heure_fin',FILTER_SANITIZE_SPECIAL_CHARS)."<br>";
-            
-            $articles        = $_POST['articles'] ?? [];
+
+            // 1. Récupérer les données du formulaire
+            $date_du_jour = filter_input(INPUT_POST, 'date_du_jour', FILTER_SANITIZE_SPECIAL_CHARS);
+            $heure_deb    = filter_input(INPUT_POST, 'heure_deb', FILTER_SANITIZE_SPECIAL_CHARS);
+            $heure_fin    = filter_input(INPUT_POST, 'heure_fin', FILTER_SANITIZE_SPECIAL_CHARS);
+
+            // Sécurité simple : vérifier que tout est bien là
+            if (!$date_du_jour || !$heure_deb || !$heure_fin) {
+                // Tu peux stocker un message en session si tu veux
+                // $_SESSION['flash_error'] = "Date ou créneau invalide.";
+                header("Location: /RestoCampus/public/?controleur=proposition&action=proposer");
+                exit;
+            }
+
+            // 2. Récupérer les articles
+            $articles = $_POST['articles'] ?? [];
+
+            // 3. Boucle sur les articles sélectionnés
             foreach ($articles as $idArticle => $data) {
 
-                echo $id_article = isset($data['propose'])."<br>";
-                echo $qte     = isset($data['qte']) ? (int)$data['qte'] : 0 ;
+                // Ne garder que les articles cochés
+                if (!isset($data['propose'])) {
+                    continue;
+                }
 
-                // Ici tu fais ton insertion SQL :
-                // INSERT INTO PropositionArticleJour (id_article, date_jour, heure_debut, heure_fin, qte) ...
+                $idArticle = (int)$idArticle;
+                if ($idArticle <= 0) {
+                    continue;
+                }
+
+                // Récupérer la quantité
+                $qte = (int)($data['qte'] ?? 0);
+
+                // On ignore les quantités nulles ou négatives
+                if ($qte <= 0) {
+                    continue;
+                }
+
+                // 4. Appel du modèle pour insérer
+                Proposition::addProposition($date_du_jour, $heure_deb, $heure_fin, $qte, $idArticle);
             }
 
-            // Valider les données (ajouter des validations supplémentaires si nécessaire)
-            if ($id_article && $date_du_jour && $heure_deb && $heure_fin && $qte) {
-                // Appeler la méthode pour ajouter la proposition
-                Proposition::addPropostion($id_article, $date_du_jour, $heure_deb, $heure_fin, $qte_max);
-                // Rediriger ou afficher un message de succès
-               
-                exit;
-            } else {
-                $error = "Tous les champs sont requis.";
-            }
+            // 5. Redirection après avoir traité TOUS les articles
+            header("Location: /RestoCampus/public/?controleur=Reservation&action=liste");
+            exit;
         }
+        
         require(__DIR__ . '/../views/propositionMenu.php');
         break;
         

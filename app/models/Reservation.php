@@ -3,10 +3,20 @@ require_once(__DIR__ . '/../../config/bdd.php');
 
 class Reservation {
 
+    
+
     public static function getMenusDisponibles() {
         global $conn;
-        $stmt = $conn->query("SELECT * FROM PropositionArticleJour 
-                              JOIN Article ON PropositionArticleJour.id_article = Article.id_article ");
+        $today = date('Y-m-d');
+        $sql = ("SELECT *
+        FROM PropositionArticleJour 
+        INNER JOIN Article  ON Article.id_article = PropositionArticleJour.id_article
+        WHERE date_du_jour = :today
+        ORDER BY heure_deb, libelleArt");
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':today', $today, PDO::PARAM_STR);
+        $stmt->execute();
+        return $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
