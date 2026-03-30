@@ -35,7 +35,7 @@ function badgeStatut($s){
       <h1 class="h4 fw-bold mb-1">Mes réservations</h1>
       <p class="mb-0 text-muted">Historique et réservations actives. Vous pouvez annuler avant l'heure limite fixée par le lycée.</p>
     </div>
-    <a href="?controleur=reservation&action=liste" class="btn btn-primary"><i class="bi bi-bag-plus me-1"></i>Nouvelle réservation</a>
+    <a href="?controleur=Reservation&action=liste" class="btn btn-primary"><i class="bi bi-bag-plus me-1"></i>Nouvelle réservation</a>
   </div>
 </header>
 
@@ -133,7 +133,7 @@ function badgeStatut($s){
                     <a class="btn btn-sm btn-outline-secondary" href="reservation_details.php?id=<?= e($r['id_commande']) ?>">
                       <i class="bi bi-eye me-1"></i>Voir
                     </a>
-                    <form method="post" action="?controleur=reservation&action=annuler" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">
+                    <form method="post" action="?controleur=Reservation&action=annuler" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">
                       <input type="hidden" name="id_cmd" value="<?= e($r['id_commande']) ?>">
                       <input type="hidden" name="id_Art" value="<?= e($r['id_ArtJour']) ?>">
                       

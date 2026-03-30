@@ -2,7 +2,7 @@
 
 // Sécurité : redirection si l'utilisateur n'est pas connecté
 if (!isset($_SESSION['user'])) {
-    header("Location: /RestoCampus/public/?controleur=auth&action=login");
+    header("Location: /RestoCampus/public/?controleur=Auth&action=login");
     exit;
 }
 
@@ -33,7 +33,7 @@ switch ($action) {
             $reservation = Reservation::reservermenu($id_user, $id_menu);
             if ($reservation) {
                 echo "Réservation enregistrée ✅";
-                header("Location: /RestoCampus/public/?controleur=reservation&action=mesreservations");
+                header("Location: /RestoCampus/public/?controleur=Reservation&action=mesreservations");
                  exit;
             } else {
                 echo "Erreur lors de la réservation ❌";
@@ -55,7 +55,7 @@ switch ($action) {
 
 
         $act = Reservation::annuler($id, $id_Art);
-        header("Location: /RestoCampus/public/?controleur=reservation&action=mesreservations");
+        header("Location: /RestoCampus/public/?controleur=Reservation&action=mesreservations");
         break;
 
     default:

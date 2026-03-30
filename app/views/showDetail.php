@@ -1,7 +1,7 @@
 <?php
 // Sécurité : accès gestionnaire ou admin
 if (!isset($_SESSION['user']) || !in_array($_SESSION['user']['statut'] ?? '', ['gestionnaire','Admin'])) {
-    header("Location: /RestoCampus/public/?controleur=auth&action=login");
+    header("Location: /RestoCampus/public/?controleur=Auth&action=login");
     exit;
 }
 

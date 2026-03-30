@@ -5,7 +5,7 @@
   <title>Connexion - RestoCampus</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/RestoCampus/public/css/auth.css">
+  <link rel="stylesheet" href="../public/css/auth.css">
 </head>
 <body>
   <!-- Fond -->
@@ -26,7 +26,7 @@
       <?php endif; ?>
 
 
-      <form  method="POST" action="?controleur=auth&action=login">
+      <form  method="POST" action="?controleur=Auth&action=login">
         <div class="mb-3">
           <label for="login" class="form-label">Identifiant</label>
           <input type="text" name="login" id="login" class="form-control" autocomplete="username" required>

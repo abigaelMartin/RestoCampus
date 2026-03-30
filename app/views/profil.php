@@ -91,7 +91,7 @@ function h(string $value = null) {
               </div>
             <?php endif; ?>
 
-            <form method="post" action="?controleur=auth&action=profil">
+            <form method="post" action="?controleur=Auth&action=profil">
               <!-- TODO : ajoute ici ton jeton CSRF si tu en utilises un -->
               <!-- <input type="hidden" name="csrf_token" value="<?= h($_SESSION['csrf_token'] ?? '') ?>"> -->
 
@@ -153,7 +153,7 @@ function h(string $value = null) {
               </div>
 
               <div class="d-flex justify-content-end gap-2 mt-4">
-                <a href="?controleur=reservation&action=liste" class="btn btn-outline-secondary">
+                <a href="?controleur=Reservation&action=liste" class="btn btn-outline-secondary">
                   <i class="bi bi-arrow-left me-1"></i>Retour aux réservations
                 </a>
                 <button type="submit" class="btn btn-primary">
@@ -184,7 +184,7 @@ function h(string $value = null) {
               </div>
             <?php endif; ?>
 
-            <form method="post" action="?controleur=auth&action=changepassword" class="row g-3">
+            <form method="post" action="?controleur=Auth&action=changepassword" class="row g-3">
               <!-- TODO : jeton CSRF si besoin -->
               <div class="col-12">
                 <label for="current_password" class="form-label">Mot de passe actuel</label>

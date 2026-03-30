@@ -1,10 +1,13 @@
 <?php
+
+
+
 session_start();
 
-$controleur = $_GET['controleur'] ?? 'auth';
+$controleur = $_GET['controleur'] ?? 'Auth';
 $action = $_GET['action'] ?? 'login';
 
-if (!isset($_SESSION['user']) && !($controleur === 'auth' && $action === 'login')) {
+if (!isset($_SESSION['user']) && !($controleur === 'Auth' && $action === 'login')) {
     header("Location: /RestoCampus/public/?controleur=Auth&action=login");
     exit;
 }

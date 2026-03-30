@@ -1,7 +1,7 @@
 <?php 
 // Sécurité : redirection si l'utilisateur n'est pas connecté
 if (!isset($_SESSION['user'])) {
-    header("Location: /RestoCampus/public/?controleur=auth&action=login");
+    header("Location: /RestoCampus/public/?controleur=Auth&action=login");
     exit;
 }
 

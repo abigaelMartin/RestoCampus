@@ -160,7 +160,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 4 Gérer les réservations (statuts) -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=reservation&action=backoffice">
+        <a class="tile" href="?controleur=Reservation&action=backoffice">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-clipboard-check fs-5"></i></span>

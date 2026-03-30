@@ -23,7 +23,7 @@ switch ($action) {
                     'login' => $user['login'],
                     'statut' => $user['statut']
                 ];
-                header("Location: ../public/?controleur=reservation&action=liste");
+                header("Location: ../public/?controleur=Reservation&action=liste");
                 exit;
             } else {
                 $message = "Identifiants incorrects.";

@@ -84,7 +84,7 @@
                       Stock : <?= max(0, $stock) ?>
                     </small>
                   <?php endif; ?>
-                    <form action="?controleur=reservation&action=reserver" method="POST">
+                    <form action="?controleur=Reservation&action=reserver" method="POST">
                       <input type="hidden" name="id_plat" value="<?= htmlspecialchars($idMenu, ENT_QUOTES, 'UTF-8') ?>">
                       <?php if($stock >0 ){?>
 

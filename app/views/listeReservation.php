@@ -45,8 +45,8 @@ function badge($s){
       <p class="mb-0 text-muted">Vue gestionnaire — rechercher, filtrer, confirmer, marquer préparée/retirée, ou annuler.</p>
     </div>
     <div class="d-flex gap-2">
-      <a href="/public/?controleur=reservation&action=exportCsv" class="btn btn-outline-secondary"><i class="bi bi-download me-1"></i>Exporter CSV</a>
-      <a href="/public/?controleur=reservation&action=nouvelle" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Créer une réservation</a>
+      <a href="/public/?controleur=Reservation&action=exportCsv" class="btn btn-outline-secondary"><i class="bi bi-download me-1"></i>Exporter CSV</a>
+      <a href="/public/?controleur=Reservation&action=nouvelle" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Créer une réservation</a>
     </div>
   </div>
 </header>
@@ -108,7 +108,7 @@ function badge($s){
     </form>
 
     <!-- Actions groupées -->
-    <form method="post" action="/public/?controleur=reservation&action=bulkUpdate" id="bulkForm" class="mb-3">
+    <form method="post" action="/public/?controleur=Reservation&action=bulkUpdate" id="bulkForm" class="mb-3">
       <?php if (!empty($csrf_token)): ?>
         <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
       <?php endif; ?>
@@ -178,14 +178,14 @@ function badge($s){
                     <button class="btn btn-sm btn-outline-info" type="submit" title="Marquer préparée"><i class="bi bi-clipboard-check"></i></button>
                   </form>
 
-                  <form method="post" action="/public/?controleur=reservation&action=updateStatus" class="d-inline">
+                  <form method="post" action="/public/?controleur=Reservation&action=updateStatus" class="d-inline">
                     <?php if (!empty($csrf_token)): ?><input type="hidden" name="csrf" value="<?= e($csrf_token) ?>"><?php endif; ?>
                     <input type="hidden" name="id" value="<?= e($id) ?>">
                     <input type="hidden" name="status" value="retiree">
                     <button class="btn btn-sm btn-outline-success" type="submit" title="Marquer retirée"><i class="bi bi-bag-check"></i></button>
                   </form>
 
-                  <form method="post" action="/public/?controleur=reservation&action=cancel" class="d-inline" onsubmit="return confirm('Confirmer l\'annulation ?');">
+                  <form method="post" action="/public/?controleur=Reservation&action=cancel" class="d-inline" onsubmit="return confirm('Confirmer l\'annulation ?');">
                     <?php if (!empty($csrf_token)): ?><input type="hidden" name="csrf" value="<?= e($csrf_token) ?>"><?php endif; ?>
                     <input type="hidden" name="id" value="<?= e($id) ?>">
                     <button class="btn btn-sm btn-outline-danger" type="submit" title="Annuler"><i class="bi bi-x-circle"></i></button>

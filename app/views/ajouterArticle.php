@@ -13,7 +13,7 @@ $user = $_SESSION['user'];
 $statut = strtolower($user['statut'] ?? '');
 
 if (!in_array($statut, ['gestionnaire', 'admin'])) {
-  header('Location: /public/?controleur=reservation&action=liste');
+  header('Location: /public/?controleur=Reservation&action=liste');
   exit();
 }
 
