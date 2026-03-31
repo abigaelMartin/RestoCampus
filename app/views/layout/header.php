@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 if (!isset($_SESSION['user'])) {
-  header('Location: /RestoCampus/public/?controleur=auth&action=login');
+  header('Location: /RestoCampus/public/?controleur=Auth&action=login');
   exit();
 }
 
@@ -121,7 +121,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark shadow-sm sticky-top">
   <div class="container">
-    <a class="navbar-brand" href="?controleur=reservation&action=liste">
+    <a class="navbar-brand" href="?controleur=Reservation&action=liste">
       <i class="bi bi-egg-fried me-1"></i> RestoCampus
     </a>
 
@@ -133,7 +133,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
       
-        <li class="nav-item"><a class="nav-link" href="?controleur=reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
+        <li class="nav-item"><a class="nav-link" href="?controleur=Reservation&action=liste"><i class="bi bi-bag me-1"></i>Réserver</a></li>
       </ul>
 
       <!-- Dropdown Mon compte (stylé) -->
@@ -163,16 +163,16 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
 
           <?php if (isset($user['statut']) && in_array($user['statut'], ['gestionnaire', 'Admin'])): ?>
-            <a class="account-item" href="?controleur=gestion&action=panel">
+            <a class="account-item" href="?controleur=Gestion&action=panel">
                 <i class="bi bi-tools fs-5"></i> <span>Gestion</span>
             </a>
         <?php endif; ?>
 
 
-            <a class="account-item" href="?controleur=auth&action=profil">
+            <a class="account-item" href="?controleur=Auth&action=profil">
               <i class="bi bi-person fs-5"></i> <span>Profil</span>
             </a>
-            <a class="account-item" href="?controleur=reservation&action=mesreservations">
+            <a class="account-item" href="?controleur=Reservation&action=mesreservations">
               <i class="bi bi-receipt-cutoff fs-5"></i> <span>Mes réservations</span>
             </a>
             <a class="account-item" href="#">
@@ -182,7 +182,7 @@ $displayName = trim(($user['prenom'] ?? '') . ' ' . ($user['nom'] ?? ''));
 
           <!-- Pied : déconnexion -->
           <div class="account-footer">
-            <a class="btn btn-outline-danger btn-logout" href="?controleur=auth&action=logout">
+            <a class="btn btn-outline-danger btn-logout" href="?controleur=Auth&action=logout">
               <i class="bi bi-box-arrow-right me-1"></i> Déconnexion
             </a>
           </div>

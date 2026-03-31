@@ -95,7 +95,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
     <div class="row g-3" id="actionsGrid">
       <!-- 1 Ajouter un article -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=article&action=AjouterUnArticle">
+        <a class="tile" href="?controleur=Article&action=AjouterUnArticle">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-plus-circle fs-5"></i></span>
@@ -111,7 +111,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 2 Ajouter un menu -->
       <div class="col-12 col-sm-6 col-lg-4">
-    <a class="tile" href="?controleur=menu&action=ajouter">
+    <a class="tile" href="?controleur=Menu&action=ajouter">
         <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
                 <span class="icon-badge">
@@ -176,7 +176,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 5 Stocks & approvisionnement -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=article&action=liste">
+        <a class="tile" href="?controleur=Article&action=liste">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-box-seam fs-5"></i></span>
@@ -194,7 +194,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       
       <!-- 6 Créneaux de retrait -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=proposition&action=proposer">
+        <a class="tile" href="?controleur=Proposition&action=proposer">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-clock-history fs-5"></i></span>
@@ -210,7 +210,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 7 Statistiques -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=stats&action=index">
+        <a class="tile" href="?controleur=Stats&action=index">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-graph-up-arrow fs-5"></i></span>
@@ -242,7 +242,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
       <!-- 9 Paramètres -->
       <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=parametres&action=index">
+        <a class="tile" href="?controleur=Parametres&action=index">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
               <span class="icon-badge"><i class="bi bi-gear fs-5"></i></span>
