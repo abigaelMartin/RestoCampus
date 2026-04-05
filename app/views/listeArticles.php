@@ -56,13 +56,18 @@ if (!function_exists('e')) {
         <i class="bi bi-box-seam me-1"></i>
         <?= !empty($articles) ? count($articles) . ' article(s)' : 'Aucun article' ?>
       </span>
-      <a href="?controleur=article&action=AjouterUnArticle" class="btn btn-primary mt-1">
+      <a href="?controleur=Article&action=AjouterUnArticle" class="btn btn-primary mt-1">
         <i class="bi bi-plus-circle me-1"></i>Ajouter un article
       </a>
     </div>
   </div>
 </header>
-
+<div class="my-3">
+  <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+    <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+    Retour 
+  </a>
+</div>
 <section class="py-2">
   <div class="container">
 
@@ -128,11 +133,11 @@ if (!function_exists('e')) {
                 </td>
 
                 <td class="text-end">
-                  <a href="?controleur=article&action=modifier&id=<?= e($id) ?>" 
+                  <a href="?controleur=Article&action=modifier&id=<?= e($id) ?>" 
                      class="btn btn-sm btn-outline-warning" title="Modifier">
                     <i class="bi bi-pencil"></i>
                   </a>
-                  <a href="?controleur=article&action=supprimer&id=<?= e($id) ?>" 
+                  <a href="?controleur=Article&action=supprimer&id=<?= e($id) ?>" 
                      class="btn btn-sm btn-outline-danger" title="Supprimer"
                      onclick="return confirm('Confirmer la suppression de cet article ?');">
                     <i class="bi bi-trash"></i>

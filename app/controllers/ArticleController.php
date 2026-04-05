@@ -61,7 +61,7 @@ switch ($action) {
             $addMenu = Article::AjouterUnArticle($libelle, $ing, $imgName);
 
             if ($addMenu) {
-                header("Location: /RestoCampus/public/?controleur=article&action=liste");
+                header("Location: /RestoCampus/public/?controleur=Article&action=liste");
                 exit;
             } else {
                 echo "Erreur lors de l'ajout de l'article ❌";
@@ -76,8 +76,19 @@ switch ($action) {
 
     case 'liste':  // ← Nouvelle case pour lister les articles
         $articles = Article::getAllArticles(); // Méthode à créer dans le modèle
-        require(__DIR__ . '/../views/listeArticles.php'); // Vue qui affichera le tableau
+        require_once(__DIR__ . '/../views/listeArticles.php'); // Vue qui affichera le tableau
     break;
+
+    case 'supprimer':
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($id) {
+            $delete = Article::supprimerArticle($id); // Méthode à créer dans le modèle
+            header("Location: ?controleur=Article&action=liste");
+            exit;
+        } else {
+            echo "ID d'article invalide.";
+            exit;
+        }
 
     default:
         echo "Action non reconnue.";

@@ -71,12 +71,17 @@ include '../app/views/layout/header.php';
     </div>
   </div>
 </header>
-
+<div class="my-3">
+  <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+    <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+    Retour 
+  </a>
+</div>
 <section class="py-3">
   <div class="container">
 
     <!-- Filtre par date -->
-    <form method="get" action="/RestoCampus/public/index.php" class="row gy-2 gx-3 align-items-end mb-4">
+    <!-- <form method="get" action="/RestoCampus/public/index.php" class="row gy-2 gx-3 align-items-end mb-4">
       <input type="hidden" name="controleur" value="proposition">
       <input type="hidden" name="action" value="listeJour">
       <div class="col-sm-6 col-md-4">
@@ -91,13 +96,14 @@ include '../app/views/layout/header.php';
           <i class="bi bi-search me-1"></i>Afficher
         </button>
       </div>
-      <div class="col-md-5 text-md-end">
-        <a href="/RestoCampus/public/?controleur=proposition&action=proposer"
+      
+    </form> -->
+      <div class="mb-4 d-flex justify-content-end">
+        <a href="?controleur=Proposition&action=proposer"
            class="btn btn-primary">
           <i class="bi bi-plus-circle me-1"></i>Créer une nouvelle proposition
         </a>
       </div>
-    </form>
 
     <?php if (empty($propositions)): ?>
 
@@ -149,10 +155,11 @@ include '../app/views/layout/header.php';
                   $statutClass = 'badge text-bg-success';
               }
 
-              $idArtJour  = (int)($p['id_artJour']  ?? 0);
+              $idArtJour  = (int)($p['id_ArtJour']  ?? 0);
               $idArticle  = (int)($p['id_article']  ?? 0);
             ?>
             <tr>
+              
               <!-- Plat -->
               <td>
                 <div class="d-flex align-items-center gap-2">
@@ -198,18 +205,12 @@ include '../app/views/layout/header.php';
                   </a>
 
                   <!-- Supprimer -->
-                  <form method="post"
-                        action="/RestoCampus/public/?controleur=proposition&action=supprimer"
-                        class="d-inline"
-                        onsubmit="return confirm('Supprimer cette proposition pour ce créneau ?');">
-                    <?php if (!empty($_SESSION['csrf'])): ?>
-                      <input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>">
-                    <?php endif; ?>
-                    <input type="hidden" name="id_artJour" value="<?= $idArtJour ?>">
-                    <button class="btn btn-sm btn-outline-danger" type="submit" title="Supprimer">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </form>
+                  <a href="?controleur=Proposition&action=supprimer&id=<?= $idArtJour ?>"
+                     class="btn btn-sm btn-outline-danger"
+                     title="Supprimer cette proposition"
+                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette proposition ?');">
+                    <i class="bi bi-trash"></i>
+                  </a>
                 </div>
               </td>
             </tr>

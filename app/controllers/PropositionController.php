@@ -86,9 +86,16 @@ switch ($action) {
         
         require(__DIR__ . '/../views/propositionMenu.php');
         break;
-    case 'deleteProposition':
+    case 'supprimer':
         // Code pour supprimer une proposition (à implémenter)
-        break;    
+        $idArtJour = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($idArtJour) {
+            Proposition::deleteProposition($idArtJour);
+        }
+        header("Location: ?controleur=Proposition&action=liste");
+        exit;
+
+        break; 
     default:
         echo "Action non reconnue pour gestion.";
         break;

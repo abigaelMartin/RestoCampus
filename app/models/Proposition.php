@@ -39,4 +39,11 @@ class Proposition {
         return false;
     }
 
+    public static function deleteProposition($idArtJour) {
+        global $conn;
+        $stmt = $conn->prepare("DELETE FROM PropositionArticleJour WHERE id_artJour = :idArtJour");
+        $stmt->bindValue(':idArtJour', $idArtJour, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
 }

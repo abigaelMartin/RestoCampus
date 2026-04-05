@@ -62,13 +62,18 @@ $heureFin   = $heureFin   ?? '11:30';
     </div>
     <div class="text-end">
       <span class="badge-soft">
-        <a href="/RestoCampus/public?controleur=proposition&action=liste" class="btn btn-primary mt-3 mt-md-0"> 
+        <a href="?controleur=Proposition&action=liste" class="btn btn-primary mt-3 mt-md-0"> 
           <i class="bi bi-eye me-1"></i>Voir propositions en cours</a>
       </span>
     </div>
   </div>
 </header>
-
+<div class="my-3">
+  <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+    <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+    Retour 
+  </a>
+</div>
 <section class="py-3">
   <div class="container">
 

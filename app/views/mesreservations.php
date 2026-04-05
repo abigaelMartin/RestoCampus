@@ -38,12 +38,17 @@ function badgeStatut($s){
     <a href="?controleur=Reservation&action=liste" class="btn btn-primary"><i class="bi bi-bag-plus me-1"></i>Nouvelle réservation</a>
   </div>
 </header>
-
+<div class="my-3">
+  <a href="<?= $_SERVER['HTTP_REFERER'] ?? '?controleur=gestion&action=panel' ?>" class="btn btn-outline-primary align-items-center" style="display: inline-flex; margin-left: 70px;">
+    <i class="bi bi-arrow-left-circle me-2 fs-5"></i>
+    Retour 
+  </a>
+</div>
 <section class="py-4">
   <div class="container">
     <!-- Filtres / recherche -->
-    <form class="row gy-2 gx-3 align-items-end mb-3" method="get" action="mesreservations.php">
-      <div class="col-sm-6 col-md-3">
+   <!-- <form class="row gy-2 gx-3 align-items-end mb-3" method="get" action="mesreservations.php">
+       <div class="col-sm-6 col-md-3">
         <label class="form-label">Recherche</label>
         <input type="search" class="form-control" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Plat, référence…">
       </div>
@@ -69,7 +74,7 @@ function badgeStatut($s){
           <i class="bi bi-search me-1"></i>Filtrer
         </button>
       </div>
-    </form>
+    </form> -->
 
     <!-- KPIs rapides -->
     <div class="row g-3 mb-3">
@@ -78,8 +83,8 @@ function badgeStatut($s){
         $actives = array_sum(array_map(fn($r)=> in_array($r['statut']??'', ['en_attente','confirmee']) ? 1:0, $reservations ?? []));
       ?>
       <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Total</div><div class="h4 mb-0"><?= $total ?></div></div></div>
-      <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Actives</div><div class="h4 mb-0"><?= $actives ?></div></div></div>
-      <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Dernière</div><div class="h4 mb-0"><?= e(($reservations[0]['date'] ?? '') ?: '—') ?></div></div></div>
+      <!-- <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Actives</div><div class="h4 mb-0"><?= $actives ?></div></div></div>
+      <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Dernière</div><div class="h4 mb-0"><?= e(($reservations[0]['date'] ?? '') ?: '—') ?></div></div></div> -->
     </div>
 
     <?php if (empty($reservations)): ?>

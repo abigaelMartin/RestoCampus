@@ -16,11 +16,22 @@ class Article {
     }
 
     // Nouvelle méthode pour lister tous les articles
-    public static function getAllArticles() {
-    global $conn;
+        public static function getAllArticles() {
+        global $conn;
 
-    $stmt = $conn->prepare("SELECT * FROM Article ORDER BY id_article DESC");
-    $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt = $conn->prepare("SELECT * FROM Article ORDER BY id_article DESC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Nouvelle méthode pour supprimer un article
+    public static function supprimerArticle($id) {
+        global $conn;
+
+        $stmt = $conn->prepare("DELETE FROM Article WHERE id_article = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt ? true : false;
+    }
+
 }

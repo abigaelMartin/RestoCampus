@@ -40,7 +40,7 @@ switch ($action) {
         session_start();
         session_unset();
         session_destroy();
-        header("Location: /RestoCampus/public/?action=login");
+        header("Location: ?action=login");
         break;
     
     default:

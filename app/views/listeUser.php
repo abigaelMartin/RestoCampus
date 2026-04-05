@@ -65,8 +65,8 @@ include '../app/views/layout/header.php';
       </span>
       <!-- Bouton pour créer un user si tu gères ça -->
       <div class="mt-1">
-        <a href="/RestoCampus/public/?controleur=utilisateur&action=ajouter" class="btn btn-primary btn-sm">
-          <i class="bi bi-person-plus me-1"></i>Importer un utilisateur
+        <a href="?controleur=utilisateur&action=ajouter" class="btn btn-primary btn-sm">
+          <i class="bi bi-person-plus me-1"></i>Créer un utilisateur
         </a>
       </div>
     </div>

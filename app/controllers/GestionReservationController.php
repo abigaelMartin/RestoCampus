@@ -25,7 +25,7 @@ switch ($action) {
     case 'liste':
         // affiche la liste des reservation
         $reservations = GestionReservation::getReservation();
-        require(__DIR__ . '/../views/ListeReservation.php'); 
+        require(__DIR__ . '/../views/listeReservation.php'); 
         break;
     case 'listes':
         require(__DIR__ . '/../views/ajouterMenu.php');

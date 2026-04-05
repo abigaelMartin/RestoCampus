@@ -110,7 +110,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       </div>
 
       <!-- 2 Ajouter un menu -->
-      <div class="col-12 col-sm-6 col-lg-4">
+      <!-- <div class="col-12 col-sm-6 col-lg-4">
     <a class="tile" href="?controleur=Menu&action=ajouter">
         <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
@@ -125,7 +125,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
             </div>
         </div>
     </a>
-</div>
+</div> -->
 
       <!-- 3 Voir les réservations -->
       <div class="col-12 col-sm-6 col-lg-4">
@@ -159,7 +159,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       </div>
 
       <!-- 4 Gérer les réservations (statuts) -->
-      <div class="col-12 col-sm-6 col-lg-4">
+      <!-- <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=Reservation&action=backoffice">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
@@ -172,7 +172,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
 
       <!-- 5 Stocks & approvisionnement -->
       <div class="col-12 col-sm-6 col-lg-4">
@@ -209,7 +209,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       </div>
 
       <!-- 7 Statistiques -->
-      <div class="col-12 col-sm-6 col-lg-4">
+      <!-- <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=Stats&action=index">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
@@ -222,9 +222,10 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
             </div>
           </div>
         </a>
-      </div>
+      </div> -->
 
       <!-- 8 Exportations -->
+       <?php if (isset($_SESSION['user']) && $_SESSION['user']['statut'] === 'Admin'): ?>
       <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=user&action=liste">
           <div class="card p-3">
@@ -233,15 +234,16 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
               <i class="bi bi-chevron-right chev"></i>
             </div>
             <div class="pt-2">
-              <h3>Exportations</h3>
-              <p>Export CSV / PDF des réservations.</p>
+              <h3>Utilisateurs</h3>
+              <p>Gérer les comptes et les permissions des utilisateurs.</p>
             </div>
           </div>
         </a>
       </div>
+      <?php endif; ?>
 
       <!-- 9 Paramètres -->
-      <div class="col-12 col-sm-6 col-lg-4">
+      <!-- <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=Parametres&action=index">
           <div class="card p-3">
             <div class="d-flex align-items-start justify-content-between">
@@ -252,7 +254,7 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
               <h3>Paramètres</h3>
               <p>Infos cantine, moyens de contact, droits.</p>
             </div>
-          </div>
+          </div> -->
         </a>
       </div>
     </div>

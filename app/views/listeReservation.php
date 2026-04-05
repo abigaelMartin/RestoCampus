@@ -45,8 +45,8 @@ function badge($s){
       <p class="mb-0 text-muted">Vue gestionnaire — rechercher, filtrer, confirmer, marquer préparée/retirée, ou annuler.</p>
     </div>
     <div class="d-flex gap-2">
-      <a href="/public/?controleur=Reservation&action=exportCsv" class="btn btn-outline-secondary"><i class="bi bi-download me-1"></i>Exporter CSV</a>
-      <a href="/public/?controleur=Reservation&action=nouvelle" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Créer une réservation</a>
+      <!-- <a href="/public/?controleur=Reservation&action=exportCsv" class="btn btn-outline-secondary"><i class="bi bi-download me-1"></i>Exporter CSV</a> -->
+      <a href="?controleur=Proposition&action=proposer" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i>Créer une réservation</a>
     </div>
   </div>
 </header>
@@ -64,10 +64,10 @@ function badge($s){
     <?php $stats = $stats ?? [];?>
     <div class="row g-3 mb-3">
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Total</div><div class="h4 mb-0"><?= (int)($stats['total'] ?? count($reservations ?? [])) ?></div></div></div>
-      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Aujourd'hui</div><div class="h4 mb-0"><?= (int)($stats['aujourd_hui'] ?? 0) ?></div></div></div>
+      <!-- <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Aujourd'hui</div><div class="h4 mb-0"><?= (int)($stats['aujourd_hui'] ?? 0) ?></div></div></div>
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Confirmées</div><div class="h4 mb-0"><?= (int)($stats['confirmees'] ?? 0) ?></div></div></div>
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Préparées</div><div class="h4 mb-0"><?= (int)($stats['preparees'] ?? 0) ?></div></div></div>
-      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Retirées</div><div class="h4 mb-0"><?= (int)($stats['retirees'] ?? 0) ?></div></div></div>
+      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Retirées</div><div class="h4 mb-0"><?= (int)($stats['retirees'] ?? 0) ?></div></div></div> -->
     </div>
 
     <!-- Filtres -->
@@ -112,7 +112,7 @@ function badge($s){
       <?php if (!empty($csrf_token)): ?>
         <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
       <?php endif; ?>
-      <div class="d-flex flex-wrap gap-2 align-items-center">
+      <!-- <div class="d-flex flex-wrap gap-2 align-items-center">
         <div class="btn-group" role="group" aria-label="Sélection">
           <button class="btn btn-outline-secondary" type="button" id="checkAll"><i class="bi bi-square me-1"></i>Tout</button>
           <button class="btn btn-outline-secondary" type="button" id="uncheckAll"><i class="bi bi-square-fill me-1"></i>Rien</button>
@@ -125,7 +125,7 @@ function badge($s){
           <option value="annuler">Annuler</option>
         </select>
         <button class="btn btn-primary" type="submit"><i class="bi bi-clipboard-check me-1"></i>Appliquer</button>
-      </div>
+      </div> -->
 
       <div class="table-responsive mt-3">
         <table class="table align-middle" id="CommandeTable">
@@ -157,7 +157,7 @@ function badge($s){
             ?>
             <tr>
               <td><input class="form-check-input" type="checkbox" name="ids[]" value="<?= e($id) ?>"></td>
-              <td><span class="fw-semibold">#<?= $ref ?></span></td>
+              <td><span class="fw-semibold"><?= $ref ?></span></td>
               <td>
                 <div class="fw-semibold"><?= $nom ?></div>
                 <?php if (!empty($r['email'])): ?><small class="text-muted"><i class="bi bi-envelope me-1"></i><?= e($r['email']) ?></small><?php endif; ?>
