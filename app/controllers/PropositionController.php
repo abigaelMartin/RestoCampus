@@ -46,7 +46,7 @@ switch ($action) {
             if (!$date_du_jour || !$heure_deb || !$heure_fin) {
                 // Tu peux stocker un message en session si tu veux
                 // $_SESSION['flash_error'] = "Date ou créneau invalide.";
-                header("Location: /RestoCampus/public/?controleur=proposition&action=proposer");
+                header("Location: ?controleur=Proposition&action=proposer");
                 exit;
             }
 
@@ -79,7 +79,7 @@ switch ($action) {
             }
 
             // 5. Redirection après avoir traité TOUS les articles
-            header("Location: /RestoCampus/public/?controleur=Reservation&action=liste");
+            header("Location: ?controleur=Reservation&action=liste");
             exit;
         }
         

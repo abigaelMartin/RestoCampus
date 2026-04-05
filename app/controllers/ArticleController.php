@@ -61,7 +61,7 @@ switch ($action) {
             $addMenu = Article::AjouterUnArticle($libelle, $ing, $imgName);
 
             if ($addMenu) {
-                header("Location: /RestoCampus/public/?controleur=Article&action=liste");
+                header("Location:?controleur=Article&action=liste");
                 exit;
             } else {
                 echo "Erreur lors de l'ajout de l'article ❌";

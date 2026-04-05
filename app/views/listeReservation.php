@@ -64,10 +64,7 @@ function badge($s){
     <?php $stats = $stats ?? [];?>
     <div class="row g-3 mb-3">
       <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Total</div><div class="h4 mb-0"><?= (int)($stats['total'] ?? count($reservations ?? [])) ?></div></div></div>
-      <!-- <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Aujourd'hui</div><div class="h4 mb-0"><?= (int)($stats['aujourd_hui'] ?? 0) ?></div></div></div>
-      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Confirmées</div><div class="h4 mb-0"><?= (int)($stats['confirmees'] ?? 0) ?></div></div></div>
-      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Préparées</div><div class="h4 mb-0"><?= (int)($stats['preparees'] ?? 0) ?></div></div></div>
-      <div class="col-6 col-md-2"><div class="p-3 kpi-card"><div class="small text-muted">Retirées</div><div class="h4 mb-0"><?= (int)($stats['retirees'] ?? 0) ?></div></div></div> -->
+     
     </div>
 
     <!-- Filtres -->
@@ -79,53 +76,15 @@ function badge($s){
                 class="form-control"
                 placeholder="Rechercher par nom, prénom ou login…">
       </div>
-      <!-- <div class="col-sm-6 col-md-3">
-        <label class="form-label">Date (du)</label>
-        <input type="date" class="form-control" name="du" value="<?= e($_GET['du'] ?? '') ?>">
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Date (au)</label>
-        <input type="date" class="form-control" name="au" value="<?= e($_GET['au'] ?? '') ?>">
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Statut</label>
-        <?php $s=$_GET['statut'] ?? '';?>
-        <select class="form-select" name="statut">
-          <option value="">Tous</option>
-          <option value="en_attente"   <?= $s==='en_attente'?'selected':'' ?>>En attente</option>
-          <option value="confirmee"    <?= $s==='confirmee'?'selected':'' ?>>Confirmée</option>
-          <option value="preparee"     <?= $s==='preparee'?'selected':'' ?>>Préparée</option>
-          <option value="retiree"      <?= $s==='retiree'?'selected':'' ?>>Retirée</option>
-          <option value="annulee"      <?= $s==='annulee'?'selected':'' ?>>Annulée</option>
-        </select>
-      </div>
-      <div class="col-12 d-flex gap-2">
-        <button class="btn btn-outline-secondary" type="reset" onclick="window.location='gestion_reservations.php'">
-          <i class="bi bi-x-circle me-1"></i>Réinitialiser
-        </button>
-        <button class="btn btn-primary" type="submit"><i class="bi bi-search me-1"></i>Filtrer</button>
-      </div> -->
+      
     </form>
 
     <!-- Actions groupées -->
-    <form method="post" action="/public/?controleur=Reservation&action=bulkUpdate" id="bulkForm" class="mb-3">
+    <form method="post" action="?controleur=Reservation&action=bulkUpdate" id="bulkForm" class="mb-3">
       <?php if (!empty($csrf_token)): ?>
         <input type="hidden" name="csrf" value="<?= e($csrf_token) ?>">
       <?php endif; ?>
-      <!-- <div class="d-flex flex-wrap gap-2 align-items-center">
-        <div class="btn-group" role="group" aria-label="Sélection">
-          <button class="btn btn-outline-secondary" type="button" id="checkAll"><i class="bi bi-square me-1"></i>Tout</button>
-          <button class="btn btn-outline-secondary" type="button" id="uncheckAll"><i class="bi bi-square-fill me-1"></i>Rien</button>
-        </div>
-        <select class="form-select w-auto" name="action" required>
-          <option value="" selected>Action groupée…</option>
-          <option value="confirmer">Marquer confirmée</option>
-          <option value="preparer">Marquer préparée</option>
-          <option value="retirer">Marquer retirée</option>
-          <option value="annuler">Annuler</option>
-        </select>
-        <button class="btn btn-primary" type="submit"><i class="bi bi-clipboard-check me-1"></i>Appliquer</button>
-      </div> -->
+
 
       <div class="table-responsive mt-3">
         <table class="table align-middle" id="CommandeTable">
@@ -171,25 +130,15 @@ function badge($s){
                 <div class="btn-group" role="group">
                   <a class="btn btn-sm btn-outline-secondary" href="?controleur=GestionReservation&action=detail&id=<?= $id ?>"><i class="bi bi-eye"></i></a>
 
-                  <form method="post" action="/public/?controleur=reservation&action=updateStatus" class="d-inline">
-                    <?php if (!empty($csrf_token)): ?><input type="hidden" name="csrf" value="<?= e($csrf_token) ?>"><?php endif; ?>
-                    <input type="hidden" name="id" value="<?= e($id) ?>">
-                    <input type="hidden" name="status" value="preparee">
-                    <button class="btn btn-sm btn-outline-info" type="submit" title="Marquer préparée"><i class="bi bi-clipboard-check"></i></button>
-                  </form>
-
-                  <form method="post" action="/public/?controleur=Reservation&action=updateStatus" class="d-inline">
-                    <?php if (!empty($csrf_token)): ?><input type="hidden" name="csrf" value="<?= e($csrf_token) ?>"><?php endif; ?>
-                    <input type="hidden" name="id" value="<?= e($id) ?>">
-                    <input type="hidden" name="status" value="retiree">
-                    <button class="btn btn-sm btn-outline-success" type="submit" title="Marquer retirée"><i class="bi bi-bag-check"></i></button>
-                  </form>
-
-                  <form method="post" action="/public/?controleur=Reservation&action=cancel" class="d-inline" onsubmit="return confirm('Confirmer l\'annulation ?');">
-                    <?php if (!empty($csrf_token)): ?><input type="hidden" name="csrf" value="<?= e($csrf_token) ?>"><?php endif; ?>
-                    <input type="hidden" name="id" value="<?= e($id) ?>">
-                    <button class="btn btn-sm btn-outline-danger" type="submit" title="Annuler"><i class="bi bi-x-circle"></i></button>
-                  </form>
+                  <?php if ($stat != 'Annulé'): ?>
+                    <?php if ($stat === 'Confirmée'): ?>
+                      <a href="?controleur=GestionReservation&action=marquerPreparer&id=<?= $id ?>" class="btn btn-sm btn-outline-info" title="Marquer préparée"><i class="bi bi-clipboard-check"></i></a>
+                    <?php elseif ($stat === 'Préparé'): ?>
+                      <a href="?controleur=GestionReservation&action=marquerRetirer&id=<?=  $id ?>" class="btn btn-sm btn-outline-success" title="Marquer retirée"><i class="bi bi-bag-check"></i></a>
+                    <?php endif; ?>
+                  
+                  <?php endif; ?>
+                 <a href="?controleur=GestionReservation&action=marquerAnnuler&id=<?=  $id ?>" class="btn btn-sm btn-outline-danger" title="Marquer annulée"><i class="bi bi-x-circle"></i></a>
                 </div>
               </td>
             </tr>

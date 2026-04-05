@@ -46,35 +46,7 @@ function badgeStatut($s){
 </div>
 <section class="py-4">
   <div class="container">
-    <!-- Filtres / recherche -->
-   <!-- <form class="row gy-2 gx-3 align-items-end mb-3" method="get" action="mesreservations.php">
-       <div class="col-sm-6 col-md-3">
-        <label class="form-label">Recherche</label>
-        <input type="search" class="form-control" name="q" value="<?= e($_GET['q'] ?? '') ?>" placeholder="Plat, référence…">
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Date</label>
-        <input type="date" class="form-control" name="date" value="<?= e($_GET['date'] ?? '') ?>">
-      </div>
-      <div class="col-sm-6 col-md-3">
-        <label class="form-label">Statut</label>
-        <select class="form-select" name="statut">
-          <?php $s = $_GET['statut'] ?? ''; ?>
-          <option value="">Tous</option>
-          <option value="Confirmée"   <?= $s==='Confirmée'?'selected':'' ?>>Confirmée</option>
-          <option value="retiree"      <?= $s==='retiree'?'selected':'' ?>>Retirée</option>
-          <option value="annulee"      <?= $s==='annulee'?'selected':'' ?>>Annulée</option>
-        </select>
-      </div>
-      <div class="col-sm-6 col-md-3 d-grid d-md-flex gap-2">
-        <button class="btn btn-outline-secondary" type="reset" onclick="window.location='mes_reservations.php'">
-          <i class="bi bi-x-circle me-1"></i>Réinitialiser
-        </button>
-        <button class="btn btn-primary" type="submit">
-          <i class="bi bi-search me-1"></i>Filtrer
-        </button>
-      </div>
-    </form> -->
+    
 
     <!-- KPIs rapides -->
     <div class="row g-3 mb-3">
@@ -83,8 +55,6 @@ function badgeStatut($s){
         $actives = array_sum(array_map(fn($r)=> in_array($r['statut']??'', ['en_attente','confirmee']) ? 1:0, $reservations ?? []));
       ?>
       <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Total</div><div class="h4 mb-0"><?= $total ?></div></div></div>
-      <!-- <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Actives</div><div class="h4 mb-0"><?= $actives ?></div></div></div>
-      <div class="col-6 col-md-3"><div class="p-3 kpi-card"><div class="small text-muted">Dernière</div><div class="h4 mb-0"><?= e(($reservations[0]['date'] ?? '') ?: '—') ?></div></div></div> -->
     </div>
 
     <?php if (empty($reservations)): ?>
@@ -92,7 +62,7 @@ function badgeStatut($s){
         <div class="display-6 mb-2">🍽️</div>
         <h2 class="h5">Aucune réservation trouvée</h2>
         <p class="text-muted mb-3">Tu n'as pas encore réservé de plat, ou tes filtres sont trop restrictifs.</p>
-        <a href="reservation.php" class="btn btn-primary"><i class="bi bi-bag-plus me-1"></i>Faire une réservation</a>
+        <a href="?controleur=Reservation&action=liste" class="btn btn-primary"><i class="bi bi-bag-plus me-1"></i>Faire une réservation</a>
       </div>
     <?php else: ?>
 
@@ -135,7 +105,7 @@ function badgeStatut($s){
                 
                 <td class="text-end ">
                   <div class="btn-group" role="group">
-                    <a class="btn btn-sm btn-outline-secondary" href="reservation_details.php?id=<?= e($r['id_commande']) ?>">
+                    <a class="btn btn-sm btn-outline-secondary" href="?controleur=Reservation&action=detail&id=<?= e($r['id_commande']) ?>">
                       <i class="bi bi-eye me-1"></i>Voir
                     </a>
                     <form method="post" action="?controleur=Reservation&action=annuler" onsubmit="return confirm('Confirmer l\'annulation de cette réservation ?');">

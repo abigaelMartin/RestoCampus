@@ -77,7 +77,7 @@ $heureFin   = $heureFin   ?? '11:30';
 <section class="py-3">
   <div class="container">
 
-    <form method="post" action="/RestoCampus/public/?controleur=proposition&action=addproposition">
+    <form method="post" action="?controleur=Proposition&action=addproposition">
       <?php if (!empty($_SESSION['csrf'])): ?>
         <input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>">
       <?php endif; ?>
@@ -162,8 +162,8 @@ $heureFin   = $heureFin   ?? '11:30';
                   $img         = $art['img']          ?? null;
 
                   $imageUrl = !empty($img)
-                    ? '/RestoCampus/public/uploads/articles/' . $img
-                    : '/RestoCampus/public/assets/img/article-placeholder.jpg';
+                    ? '/Restocampus/public/uploads/articles/' . $img
+                    : '/Restocampus/public/assets/images/image-plat.jpeg';
                 ?>
                 <tr>
                   <!-- Checkbox -->

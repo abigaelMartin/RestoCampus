@@ -33,13 +33,42 @@ switch ($action) {
     case 'detail':
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (!$id) {
-            header("Location: /RestoCampus/public/?controleur=gestionReservation&action=liste");
+            header("Location: ?controleur=GestionReservation&action=liste");
             exit;
         }   
         $resa = GestionReservation::getReservationById($id);
         
         require(__DIR__ . '/../views/showDetail.php');
-       
+        break;
+    case 'marquerPreparer':
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($id) {
+            GestionReservation::marquerPreparer($id);
+        }else {
+            // id manquant ou invalide, tu peux gérer ça comme tu veux (message d'erreur, redirection, etc.)
+        }
+        header("Location: ?controleur=GestionReservation&action=detail&id=$id");
+        
+        break;
+    case 'marquerRetirer':
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($id) {
+            GestionReservation::marquerRetiree($id);
+        }else
+        {
+            // id manquant ou invalide, tu peux gérer ça comme tu veux (message d'erreur, redirection, etc.)
+        }
+        header("Location: ?controleur=GestionReservation&action=detail&id=$id");
+        break;
+    case 'marquerAnnuler':
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        if ($id) {
+            GestionReservation::annuler($id);
+        }else
+        {
+            // id manquant ou invalide, tu peux gérer ça comme tu veux (message d'erreur, redirection, etc.)
+        }
+        header("Location: ?controleur=GestionReservation&action=detail&id=$id");
         break;
     default :
         echo "Action non reconnue pour gestion.";

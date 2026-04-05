@@ -109,10 +109,10 @@ if (!function_exists('e')) {
                 $description = $art['Description']  ?? '';
 
                 // image : adapte le nom du champ ci-dessous à ta BDD
-                // par ex. $art['image'], $art['photo'], etc.
+             
                 $imageUrl = !empty($art['img'])
-                  ? '/RestoCampus/public/uploads/articles/' . $art['img']
-                  : '/RestoCampus/public/assets/img/article-placeholder.jpg';
+                  ? '/Restocampus/public/uploads/articles/' . $art['img']
+                  : '/Restocampus/public/assets/images/image-plat.jpeg';
  // image par défaut à créer si tu veux
               ?>
               <tr>

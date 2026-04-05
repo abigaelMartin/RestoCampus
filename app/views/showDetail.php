@@ -70,13 +70,13 @@ include '../app/views/layout/header.php';
       // Sécurisation/normalisation
       $id         = isset($res['id_reservation']) ? (int)$res['id_reservation'] : 0;
       $libelle    = isset($res['libelleArt'])      ? trim($res['libelleArt']) : 'Plat';
-      $qte        = isset($res['qte'])             ? (int)$res['qte'] : 0;
+      $qte        = isset($res['qte_cmd'])             ? (int)$res['qte_cmd'] : 0;
       $prixUnit   = isset($res['prix_unit'])      ? (float)$res['prix_unit'] : 0.0;
     ?>
  
   <div class="container d-flex flex-wrap justify-content-between align-items-center gap-3">
     <div>
-      <a href="/RestoCampus/public/?controleur=GestionReservation&action=liste" class="btn btn-sm btn-outline-secondary mb-2">
+      <a href="?controleur=GestionReservation&action=liste" class="btn btn-sm btn-outline-secondary mb-2">
         <i class="bi bi-arrow-left me-1"></i> Retour à la liste
       </a>
       <h1 class="h4 fw-bold mb-1">
@@ -179,14 +179,12 @@ include '../app/views/layout/header.php';
                         $libelle = $resa['libelleArt'] ?? '';
                         $description = $resa['Description'] ?? '';
                         $qte     = (int)($resa['qte_cmd'] ?? 0);
-                       
-                       
+                      
                       ?>
                       <tr>
                         <td><?= e($libelle) ?></td>
                         <td><?= e($description) ?></td>
                         <td class="text-center"><?= $qte ?></td>
-                        
                       </tr>
                     
                   </tbody>
@@ -209,23 +207,21 @@ include '../app/views/layout/header.php';
           </div>
           <div class="card-body d-flex flex-wrap gap-2">
             <?php if ($statut=="Confirmée"): ?>
-              <form method="post" action="/RestoCampus/public/?controleur=GestionReservation&action=marquerPreparee" class="me-2">
+              <form method="post" action="?controleur=GestionReservation&action=marquerPreparer" class="me-2">
                 <input type="hidden" name="id_reservation" value="<?= (int)$resa['id_commande'] ?>">
                 <button class="btn btn-outline-primary btn-sm" type="submit">
                   <i class="bi bi-clipboard-check me-1"></i> Marquer comme préparée
                 </button>
               </form>
 
-
-
-              <form method="post" action="/RestoCampus/public/?controleur=GestionReservation&action=annuler" onsubmit="return confirm('Annuler cette réservation ?');">
+              <form method="post" action="?controleur=GestionReservation&action=annuler" onsubmit="return confirm('Annuler cette réservation ?');">
                 <input type="hidden" name="id_commande" value="<?= (int)$resa['id_commande'] ?>">
                 <button class="btn btn-outline-danger btn-sm" type="submit">
                   <i class="bi bi-x-circle me-1"></i> Annuler
                 </button>
               </form>
             <?php elseif ($statut === 'Préparé'): ?>
-              <form method="post" action="/RestoCampus/public/?controleur=GestionReservation&action=marquerRetiree">
+              <form method="post" action="?controleur=GestionReservation&action=marquerRetiree">
                 <input type="hidden" name="id_commande" value="<?= (int)$resa['id_commande'] ?>">
                 <button class="btn btn-success btn-sm" type="submit">
                   <i class="bi bi-bag-check me-1"></i> Marquer comme retirée

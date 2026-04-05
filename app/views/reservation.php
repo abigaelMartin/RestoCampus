@@ -40,7 +40,7 @@
             $ingEsc = htmlspecialchars($ing, ENT_QUOTES, 'UTF-8');
 
             $img = !empty($menu['img'])
-              ? '/RestoCampus/public/uploads/articles/' . $menu['img']
+              ? './uploads/articles/' . $menu['img']
               // fallback Unsplash : on met le libellé en requête pour un visuel cohérent
               : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=1200&auto=format&fit=crop';
 

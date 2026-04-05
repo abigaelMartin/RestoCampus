@@ -33,7 +33,7 @@ switch ($action) {
             $reservation = Reservation::reservermenu($id_user, $id_menu);
             if ($reservation) {
                 echo "Réservation enregistrée ✅";
-                header("Location: /RestoCampus/public/?controleur=Reservation&action=mesreservations");
+                header("Location: ?controleur=Reservation&action=mesreservations");
                  exit;
             } else {
                 echo "Erreur lors de la réservation ❌";
@@ -55,9 +55,17 @@ switch ($action) {
 
 
         $act = Reservation::annuler($id, $id_Art);
-        header("Location: /RestoCampus/public/?controleur=Reservation&action=mesreservations");
+        header("Location: ?controleur=Reservation&action=mesreservations");
         break;
-
+    case 'detail':
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $reservation = Reservation::getDetails($id); // méthode à créer dans Reservation.php
+        if (!$reservation) {
+            echo "Réservation non trouvée.";
+            exit;
+        }
+        require(__DIR__ . '/../views/reservation_detail.php'); // vue à créer pour afficher les détails
+        break;
     default:
         echo "Action non reconnue.";
         break;

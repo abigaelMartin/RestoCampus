@@ -109,24 +109,6 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
         </a>
       </div>
 
-      <!-- 2 Ajouter un menu -->
-      <!-- <div class="col-12 col-sm-6 col-lg-4">
-    <a class="tile" href="?controleur=Menu&action=ajouter">
-        <div class="card p-3">
-            <div class="d-flex align-items-start justify-content-between">
-                <span class="icon-badge">
-                    <i class="bi bi-plus-square fs-5"></i>
-                </span>
-                <i class="bi bi-chevron-right chev"></i>
-            </div>
-            <div class="pt-2">
-                <h3>Ajouter un menu</h3>
-                <p>Composer le plat du jour et le publier.</p>
-            </div>
-        </div>
-    </a>
-</div> -->
-
       <!-- 3 Voir les réservations -->
       <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=GestionReservation&action=liste">
@@ -158,22 +140,6 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
         </a>
       </div>
 
-      <!-- 4 Gérer les réservations (statuts) -->
-      <!-- <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=Reservation&action=backoffice">
-          <div class="card p-3">
-            <div class="d-flex align-items-start justify-content-between">
-              <span class="icon-badge"><i class="bi bi-clipboard-check fs-5"></i></span>
-              <i class="bi bi-chevron-right chev"></i>
-            </div>
-            <div class="pt-2">
-              <h3>Gérer les statuts</h3>
-              <p>Confirmer, préparer, marquer retirée, annuler.</p>
-            </div>
-          </div>
-        </a>
-      </div> -->
-
       <!-- 5 Stocks & approvisionnement -->
       <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=Article&action=liste">
@@ -190,8 +156,6 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
         </a>
       </div>
 
-
-      
       <!-- 6 Créneaux de retrait -->
       <div class="col-12 col-sm-6 col-lg-4">
         <a class="tile" href="?controleur=Proposition&action=proposer">
@@ -207,22 +171,6 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
           </div>
         </a>
       </div>
-
-      <!-- 7 Statistiques -->
-      <!-- <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=Stats&action=index">
-          <div class="card p-3">
-            <div class="d-flex align-items-start justify-content-between">
-              <span class="icon-badge"><i class="bi bi-graph-up-arrow fs-5"></i></span>
-              <i class="bi bi-chevron-right chev"></i>
-            </div>
-            <div class="pt-2">
-              <h3>Statistiques</h3>
-              <p>Volumes, heures de pointe, plats favoris.</p>
-            </div>
-          </div>
-        </a>
-      </div> -->
 
       <!-- 8 Exportations -->
        <?php if (isset($_SESSION['user']) && $_SESSION['user']['statut'] === 'Admin'): ?>
@@ -242,19 +190,6 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
       </div>
       <?php endif; ?>
 
-      <!-- 9 Paramètres -->
-      <!-- <div class="col-12 col-sm-6 col-lg-4">
-        <a class="tile" href="?controleur=Parametres&action=index">
-          <div class="card p-3">
-            <div class="d-flex align-items-start justify-content-between">
-              <span class="icon-badge"><i class="bi bi-gear fs-5"></i></span>
-              <i class="bi bi-chevron-right chev"></i>
-            </div>
-            <div class="pt-2">
-              <h3>Paramètres</h3>
-              <p>Infos cantine, moyens de contact, droits.</p>
-            </div>
-          </div> -->
         </a>
       </div>
     </div>

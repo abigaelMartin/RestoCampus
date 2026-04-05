@@ -44,5 +44,29 @@ class GestionReservation {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
        
-  }
     }
+
+    public static function marquerPreparer($id) {
+        global $conn;
+        $sql = "UPDATE Commande SET statut = 'Préparé' WHERE id_commande = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public static function marquerRetiree($id) {
+        global $conn;
+        $sql = "UPDATE Commande SET statut = 'Retiré' WHERE id_commande = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public static function annuler($id) {
+        global $conn;
+        $sql = "UPDATE Commande SET statut = 'Annulé' WHERE id_commande = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+}

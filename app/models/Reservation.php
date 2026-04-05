@@ -57,7 +57,6 @@ class Reservation {
         WHERE id_ArtJour = ?");
         $stmt2->execute([$id_proposition]);
 
-
         if ($stmt1){
             return true;
         }else{
@@ -75,5 +74,18 @@ class Reservation {
         WHERE id_ArtJour = ? ");
         $stmt1->execute([$id_Art]);
         
+    }
+
+    public static function getDetails($id) {
+        global $conn;
+        $stmt = $conn->prepare("SELECT *
+                                FROM Commande 
+                                JOIN Commander  ON Commande.id_commande = Commander.id_commande 
+                                JOIN PropositionArticleJour ON PropositionArticleJour.id_ArtJour = Commander.id_ArtJour 
+                                JOIN Article ON Article.id_article = PropositionArticleJour.id_article
+                                WHERE Commande.id_commande = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

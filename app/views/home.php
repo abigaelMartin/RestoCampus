@@ -39,9 +39,9 @@ if (!isset($user['statut']) || !in_array($user['statut'], ['gestionnaire', 'Admi
 
     <div class="gestion-list">
 
-        <a class="gestion-item" href="?controleur=article&action=AjouterUnArticle">
+        <a class="gestion-item" href="?controleur=Article&action=AjouterUnArticle">
             <i class="bi bi-plus-circle fs-4"></i>
-            <span>Ajouter un arcile</span>
+            <span>Ajouter un article</span>
         </a>
 
         <a class="gestion-item" href="?controleur=AjouterArticle&action=Ajoutermenu">
